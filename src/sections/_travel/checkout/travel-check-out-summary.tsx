@@ -66,11 +66,11 @@ export default function TravelCheckOutSummary({
           },
         }}
       >
-        <Image alt={slug} src={coverUrl} ratio="1/1" sx={{ borderRadius: 2 }} />
+        <Image alt={slug.title_eng} src={coverUrl} ratio="1/1" sx={{ borderRadius: 2 }} />
 
         <Stack>
           <TextMaxLine variant="h5" sx={{ mb: 2 }}>
-            {slug}
+            {slug.title_eng}
           </TextMaxLine>
 
           <Stack spacing={0.5} direction="row" alignItems="center">

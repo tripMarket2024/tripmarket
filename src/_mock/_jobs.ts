@@ -65,7 +65,7 @@ export const _jobs = [...Array(12)].map((_, index) => {
 
   const location = countries.map((option) => option.label)[index + 1];
 
-  const languages = ['Russian', 'Spanish', 'English'];
+  const languages = ['Russian', 'Spanish', 'English', 'Georgian'];
 
   const skills = _tags.slice(0, 5);
 

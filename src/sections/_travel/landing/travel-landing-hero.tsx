@@ -12,6 +12,7 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import { fCurrency } from 'src/utils/format-number';
 
 import { bgBlur, bgGradient } from 'src/theme/css';
+import { useLanguage } from 'src/contexts/language-context';
 
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
@@ -138,6 +139,8 @@ function CarouselItem({ tour }: CarouselItemProps) {
     />
   );
 
+  const { renderLanguage } = useLanguage()
+
   return (
     <Box
       sx={{
@@ -158,11 +161,11 @@ function CarouselItem({ tour }: CarouselItemProps) {
         }}
       >
         <Typography variant="overline" sx={{ color: 'info.main', mb: 5 }}>
-          {tour.location}
+          {renderLanguage(tour.location.label_ka, tour.location.label)}
         </Typography>
 
-        <Typography variant="h1" sx={{ maxWidth: 480 }}>
-          {tour.slug}
+        <Typography variant="h1" sx={{ maxWidth: 480, fontFeatureSettings: "'case' on", textAlign: 'center' }}>
+          {renderLanguage(tour.slug.title_ka, tour.slug.title_eng)}
         </Typography>
 
         <Stack
@@ -227,6 +230,8 @@ type ThumbnailItemProps = {
 function ThumbnailItem({ tour, selected }: ThumbnailItemProps) {
   const theme = useTheme();
 
+  const { renderLanguage } = useLanguage()
+
   return (
     <Stack
       direction="row"
@@ -250,13 +255,13 @@ function ThumbnailItem({ tour, selected }: ThumbnailItemProps) {
 
       <Stack spacing={0.5}>
         <TextMaxLine variant="h6" line={1}>
-          {tour.location}
+          {renderLanguage(tour.location.label_ka, tour.location.label)}
         </TextMaxLine>
 
         <Stack direction="row" alignItems="center">
           <Iconify icon="carbon:location" sx={{ mr: 1, color: 'primary.main' }} />
           <TextMaxLine variant="caption" line={1} sx={{ opacity: 0.48 }}>
-            {tour.continent}
+            {renderLanguage(tour.continent.label_ka, tour.continent.label)}
           </TextMaxLine>
         </Stack>
       </Stack>

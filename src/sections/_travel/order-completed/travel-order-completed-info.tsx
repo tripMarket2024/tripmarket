@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 
 import { fShortenNumber } from 'src/utils/format-number';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import Iconify from 'src/components/iconify';
 
 import { ITourProps } from 'src/types/tour';
@@ -19,6 +21,8 @@ type Props = {
 export default function TravelOrderCompletedInfo({ tour }: Props) {
   const { slug, ratingNumber, totalReviews, tourGuide } = tour;
 
+  const {renderLanguage} = useLanguage()
+
   return (
     <Stack
       spacing={2}
@@ -26,7 +30,7 @@ export default function TravelOrderCompletedInfo({ tour }: Props) {
       justifyContent={{ md: 'space-between' }}
     >
       <Stack spacing={2}>
-        <Typography variant="h5">{slug}</Typography>
+        <Typography variant="h5">{renderLanguage(slug.title_ka, slug.title_eng)}</Typography>
 
         <Stack spacing={0.5} direction="row" alignItems="center">
           <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />

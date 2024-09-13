@@ -12,3 +12,8 @@
 @import 'yet-another-react-lightbox/styles.css';
 @import 'yet-another-react-lightbox/plugins/captions.css';
 @import 'yet-another-react-lightbox/plugins/thumbnails.css';
+
+@font-face {
+    font-family: 'UpperCaseGeo';
+    src: url('../public/fonts/NotoSansGeorgian-VariableFont_wdth\,wght.ttf') format('truetype');
+  }

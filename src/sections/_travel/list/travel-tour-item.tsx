@@ -13,6 +13,8 @@ import { RouterLink } from 'src/routes/components';
 
 import { fCurrency } from 'src/utils/format-number';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
@@ -33,6 +35,8 @@ export default function TravelTourItem({ tour }: Props) {
   const handleChangeFavorite = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setFavorite(event.target.checked);
   }, []);
+
+  const { renderLanguage } = useLanguage();
 
   return (
     <Card>
@@ -85,16 +89,16 @@ export default function TravelTourItem({ tour }: Props) {
         />
       </Stack>
 
-      <Image alt={slug} src={coverUrl} ratio="1/1" />
+      <Image alt={slug.title_eng} src={coverUrl} ratio="1/1" />
 
       <Stack spacing={0.5} sx={{ p: 2.5 }}>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {location}
+          {renderLanguage(location.label_ka, location.label)}
         </Typography>
 
         <Link component={RouterLink} href={paths.travel.tour} color="inherit">
           <TextMaxLine variant="h6" persistent>
-            {slug}
+            {renderLanguage(slug.title_ka, slug.title_eng)}
           </TextMaxLine>
         </Link>
       </Stack>
