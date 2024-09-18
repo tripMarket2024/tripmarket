@@ -51,7 +51,7 @@ export default function TravelTourDetailsSummary({ tour }: Props) {
             text={`${fDate(available.start, 'dd/MM/yyyy')} - ${fDate(available.end, 'dd/MM/yyyy')}`}
           />
           <OverviewItem icon="carbon:user" label="Contact name" text={tourGuide?.name} />
-          <OverviewItem icon="carbon:location" label="Location" text={location} />
+          <OverviewItem icon="carbon:location" label="Location" text={location.label} />
           <OverviewItem
             icon="carbon:mobile"
             label="Contact phone"
