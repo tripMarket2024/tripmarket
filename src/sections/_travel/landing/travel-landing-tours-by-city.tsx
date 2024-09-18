@@ -12,6 +12,8 @@ import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
 
@@ -24,6 +26,9 @@ type Props = {
 };
 
 export default function TravelLandingToursByCity({ tours }: Props) {
+
+  const {renderLanguage} = useLanguage()
+
   const mdUp = useResponsive('up', 'md');
 
   const viewAllBtn = (
@@ -54,10 +59,10 @@ export default function TravelLandingToursByCity({ tours }: Props) {
         }}
       >
         <Stack spacing={3}>
-          <Typography variant="h2">Tours By City</Typography>
+          <Typography variant="h2">{renderLanguage('ტურები ქალაქების მიხედვით', 'Tours By City')}</Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            {`Our Featured Tours can help you find the trip that's perfect for you!`}
+            {renderLanguage('აქ თესლი ტურებით თესლად იპოვით ტურებს ქალაქების მიხედვით', `Our Featured Tours can help you find the trip that's perfect for you!`)}
           </Typography>
         </Stack>
 
@@ -99,6 +104,8 @@ type TourItemProps = {
 function TourItem({ tour }: TourItemProps) {
   const { coverUrl, location } = tour;
 
+  const { renderLanguage } = useLanguage();
+
   return (
     <Link component={RouterLink} href={paths.travel.tour} color="inherit" underline="none">
       <Paper
@@ -119,7 +126,7 @@ function TourItem({ tour }: TourItemProps) {
 
           <Stack spacing={0.5}>
             <TextMaxLine variant="h6" line={1}>
-              {location}
+              {renderLanguage(location.label_ka, location.label)}
             </TextMaxLine>
 
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>

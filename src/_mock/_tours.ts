@@ -24,7 +24,7 @@ export const TOUR_SERVICE_OPTIONS = [
 ];
 
 export const _tours = [...Array(12)].map((_, index) => {
-  const location = countries.map((option) => option.label)[index + 1];
+  const location = countries.map((option) => option)[index + 1];
 
   const gallery = [...Array(6)].map((__, itemIndex) => _mock.image.travel(itemIndex + 2));
 

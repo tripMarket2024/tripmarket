@@ -345,31 +345,128 @@ export const _productNames = [
 // ----------------------------------------------------------------------
 
 export const _tourNames = [
-  'Adventure Seekers Expedition',
-  'Historic Heritage Tour',
-  'Culinary Delights Exploration',
-  "Nature's Wonders Escapade",
-  'Cultural Immersion Journey',
-  'Wildlife Safari Expedition',
-  "Urban Explorer's City Tour",
-  'Coastal Paradise Getaway',
-  'Wine Tasting Experience',
-  'Spiritual Retreat Tour',
-  'Outdoor Adventure Trek',
-  'Photography Expedition',
-  'Music and Arts Discovery Tour',
-  'Wellness and Yoga Retreat',
-  'Hidden Gems Discovery Tour',
-  'Volcano and Geothermal Exploration',
-  "Foodie's Gastronomic Tour",
-  'Hiking and Camping Adventure',
-  'Architecture and Design Tour',
-  'Coastal Cruise and Island Hopping',
-  'Scenic Train Ride Experience',
-  'Historical Landmarks Expedition',
-  'Surfing and Beach Adventure',
-  'Nightlife and Entertainment Tour',
+  {
+    title_ka: 'თავგადასავლების მაძიებელთა ექსპედიცია',
+    title_eng: 'Adventure Seekers Expedition',
+    id: 1
+  },
+  {
+    title_ka: 'ისტორიული მემკვიდრეობის ტური',
+    title_eng: 'Historic Heritage Tour',
+    id: 2
+  },
+  {
+    title_ka: 'კულინარიული სიამოვნებების კვლევა',
+    title_eng: 'Culinary Delights Exploration',
+    id: 3
+  },
+  {
+    title_ka: 'ბუნების საოცრებების თავგადასავალი',
+    title_eng: "Nature's Wonders Escapade",
+    id: 4
+  },
+  {
+    title_ka: 'კულტურული ჩაღრმავების მოგზაურობა',
+    title_eng: 'Cultural Immersion Journey',
+    id: 5
+  },
+  {
+    title_ka: 'ველური ბუნების საფარი ექსპედიცია',
+    title_eng: 'Wildlife Safari Expedition',
+    id: 6
+  },
+  {
+    title_ka: 'ურბანული გამოკვლევის ქალაქის ტური',
+    title_eng: "Urban Explorer's City Tour",
+    id: 7
+  },
+  {
+    title_ka: 'სანაპიროს სამოთხის დასვენება',
+    title_eng: 'Coastal Paradise Getaway',
+    id: 8
+  },
+  {
+    title_ka: 'ღვინის დაგემოვნების გამოცდილება',
+    title_eng: 'Wine Tasting Experience',
+    id: 9
+  },
+  {
+    title_ka: 'სულიერი რიტრიტის ტური',
+    title_eng: 'Spiritual Retreat Tour',
+    id: 10
+  },
+  {
+    title_ka: 'გარე თავგადასავლების ლაშქრობა',
+    title_eng: 'Outdoor Adventure Trek',
+    id: 11
+  },
+  {
+    title_ka: 'ფოტოგრაფიული ექსპედიცია',
+    title_eng: 'Photography Expedition',
+    id: 12
+  },
+  {
+    title_ka: 'მუსიკისა და ხელოვნების აღმოჩენის ტური',
+    title_eng: 'Music and Arts Discovery Tour',
+    id: 13
+  },
+  {
+    title_ka: 'ჯანსაღი ცხოვრების და იოგას რიტრიტი',
+    title_eng: 'Wellness and Yoga Retreat',
+    id: 14
+  },
+  {
+    title_ka: 'დამალული მარგალიტების აღმოჩენის ტური',
+    title_eng: 'Hidden Gems Discovery Tour',
+    id: 15
+  },
+  {
+    title_ka: 'ვულკანების და გეოთერმული კვლევა',
+    title_eng: 'Volcano and Geothermal Exploration',
+    id: 16
+  },
+  {
+    title_ka: 'გურმანების გასტრონომიული ტური',
+    title_eng: "Foodie's Gastronomic Tour",
+    id: 17
+  },
+  {
+    title_ka: 'ლაშქრობის და ბანაკების თავგადასავალი',
+    title_eng: 'Hiking and Camping Adventure',
+    id: 18
+  },
+  {
+    title_ka: 'არქიტექტურისა და დიზაინის ტური',
+    title_eng: 'Architecture and Design Tour',
+    id: 19
+  },
+  {
+    title_ka: 'სანაპიროს კრუიზი და კუნძულების ტური',
+    title_eng: 'Coastal Cruise and Island Hopping',
+    id: 20
+  },
+  {
+    title_ka: 'მშვენიერი მატარებლის მოგზაურობის გამოცდილება',
+    title_eng: 'Scenic Train Ride Experience',
+    id: 21
+  },
+  {
+    title_ka: 'ისტორიული ძეგლების ექსპედიცია',
+    title_eng: 'Historical Landmarks Expedition',
+    id: 22
+  },
+  {
+    title_ka: 'სერფინგისა და სანაპირო თავგადასავალი',
+    title_eng: 'Surfing and Beach Adventure',
+    id: 23
+  },
+  {
+    title_ka: 'ღამის ცხოვრება და გართობის ტური',
+    title_eng: 'Nightlife and Entertainment Tour',
+    id: 24
+  },
 ];
+
 
 // ----------------------------------------------------------------------
 

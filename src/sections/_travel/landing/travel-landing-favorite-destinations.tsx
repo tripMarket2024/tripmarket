@@ -7,6 +7,8 @@ import { alpha, useTheme } from '@mui/material/styles';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
@@ -16,12 +18,30 @@ import { ITourProps } from 'src/types/tour';
 // ----------------------------------------------------------------------
 
 const ROWS = [
-  'First Class Flights',
-  '5 Star Accommodations',
-  'Inclusive Packages',
-  'Latest Model Vehicles',
-  'Handpicked Hotels',
-  'Accesibility managment',
+  {
+    rowText: 'First Class Flights',
+    rowTextGeo: 'პირველი კლასის ფრენები'
+  },
+  {
+    rowText: '5 Star Accommodations',
+    rowTextGeo: '5 ვარსკვლავიანი თესლობბები'
+  },
+  {
+    rowText: 'Latest Model Vehicles',
+    rowTextGeo: 'ბოლო დონის ტრანსპორტი'
+  },
+  {
+    rowText: 'Handpicked Hotels',
+    rowTextGeo: 'კაი კაი სასტუმროები'
+  },
+  {
+    rowText: 'Accesibility managment',
+    rowTextGeo: 'კარგად ნარჩევი ბოზები'
+  },
+  {
+    rowText: 'First Class Flights',
+    rowTextGeo: 'კიდე რამე'
+  },
 ];
 
 // ----------------------------------------------------------------------
@@ -31,6 +51,9 @@ type Props = {
 };
 
 export default function TravelLandingFavoriteDestinations({ tours }: Props) {
+
+  const {renderLanguage} = useLanguage()
+
   return (
     <Container
       sx={{
@@ -45,16 +68,15 @@ export default function TravelLandingFavoriteDestinations({ tours }: Props) {
         justifyContent={{ md: 'space-between' }}
       >
         <Grid xs={12} md={4}>
-          <Typography variant="h2">Our Favorite Destinations</Typography>
+          <Typography variant="h2">{renderLanguage('ჩვენი საყვარელი ადგილები!', 'Our Favorite destinations')}</Typography>
 
           <Typography sx={{ my: 3, color: 'text.secondary' }}>
-            Since wire-frame renderings are relatively simple and fast to calculate, they are often
-            used in cases
+            {renderLanguage('რაამმე გრძელი აღწერის ტექსტი, სამუშაო გაქვს საბიკ', 'Since wire-frame renderings are relatively simple and fast to calculate, they are often')}
           </Typography>
 
           <Stack spacing={2}>
-            {ROWS.map((line) => (
-              <Stack key={line} direction="row" alignItems="center" sx={{ typography: 'body1' }}>
+            {ROWS.map((row) => (
+              <Stack key={row.rowText} direction="row" alignItems="center" sx={{ typography: 'body1' }}>
                 <Box
                   sx={{
                     mr: 2,
@@ -64,7 +86,7 @@ export default function TravelLandingFavoriteDestinations({ tours }: Props) {
                     bgcolor: 'primary.main',
                   }}
                 />
-                {line}
+                {renderLanguage(row.rowTextGeo, row.rowText)}
               </Stack>
             ))}
           </Stack>
@@ -106,6 +128,8 @@ function DestinationItem({ tour, order }: DestinationItemProps) {
 
   const { location, continent, coverUrl } = tour;
 
+  const {renderLanguage} = useLanguage()
+
   return (
     <Box
       sx={{
@@ -116,7 +140,7 @@ function DestinationItem({ tour, order }: DestinationItemProps) {
       }}
     >
       <Image
-        alt={location}
+        alt={location.label}
         src={coverUrl}
         ratio={(!mdUp && '1/1') || (order && '1/1') || '4/6'}
         overlay={`linear-gradient(to bottom, ${alpha(theme.palette.common.black, 0)} 0%, ${
@@ -136,13 +160,13 @@ function DestinationItem({ tour, order }: DestinationItemProps) {
         }}
       >
         <TextMaxLine variant="h5" line={1}>
-          {location}
+          {renderLanguage(location.label_ka, location.label)}
         </TextMaxLine>
 
         <Stack direction="row" alignItems="center">
           <Iconify icon="carbon:location" sx={{ mr: 1, color: 'primary.main' }} />
           <TextMaxLine variant="body2" line={1} sx={{ opacity: 0.72 }}>
-            {continent}
+            {renderLanguage(continent.label_ka, continent.label)}
           </TextMaxLine>
         </Stack>
       </Stack>

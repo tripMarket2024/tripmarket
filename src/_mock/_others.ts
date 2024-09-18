@@ -21,6 +21,7 @@ export const _testimonials = [...Array(8)].map((_, index) => ({
   ratingNumber: 5,
   review:
     'Amazing experience i love it a lot. Thanks to the team that dreams come true, great! I appreciate there attitude and approach.',
+  reviewGeo: 'აუუუუუუ, ძალიან მაგარი გუნდი ხარრთ. მე და ჩემი დაქალები აი იმენა გადაყლევებამდე ვგულაობთ თქვენ ტურებზეეეეე ვუჰუუუუუ',
 }));
 
 // ----------------------------------------------------------------------
@@ -112,6 +113,7 @@ export const _faqs = [
   question,
   answer:
     'Amazing experience i love it a lot. Thanks to the team that dreams come true, great! I appreciate there attitude and approach.',
+  answerGeo: 'აუუუუუუ, ძალიან მაგარი გუნდი ხარრთ. მე და ჩემი დაქალები აი იმენა გადაყლევებამდე ვგულაობთ თქვენ ტურებზეეეეე ვუჰუუუუუ',
 }));
 
 export const _faqsSupport = [
@@ -130,4 +132,5 @@ export const _faqsSupport = [
   question,
   answer:
     'Amazing experience i love it a lot. Thanks to the team that dreams come true, great! I appreciate there attitude and approach.',
+  answerGeo: 'აუუუუუუ, ძალიან მაგარი გუნდი ხარრთ. მე და ჩემი დაქალები აი იმენა გადაყლევებამდე ვგულაობთ თქვენ ტურებზეეეეე ვუჰუუუუუ',
 }));

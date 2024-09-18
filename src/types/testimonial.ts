@@ -5,6 +5,7 @@ export type ITestimonialProps = {
   name: string;
   role: string;
   review: string;
+  reviewGeo: string;
   avatarUrl: string;
   createdAt: Date;
   ratingNumber: number;
