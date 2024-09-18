@@ -2,6 +2,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Stack, { StackProps } from '@mui/material/Stack';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import Iconify from 'src/components/iconify';
 
 import { ITestimonialProps } from 'src/types/testimonial';
@@ -13,6 +15,9 @@ interface Props extends StackProps {
 }
 
 export default function TestimonialItem({ testimonial, sx, ...other }: Props) {
+
+  const {renderLanguage} = useLanguage()
+
   return (
     <Stack
       alignItems={{
@@ -38,7 +43,7 @@ export default function TestimonialItem({ testimonial, sx, ...other }: Props) {
           fontSize: { md: 20 },
         }}
       >
-        {testimonial.review}
+        {renderLanguage(testimonial.reviewGeo, testimonial.review)}
       </Typography>
 
       <Stack spacing={1.5} alignItems="center" direction="row">

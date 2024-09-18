@@ -4,6 +4,8 @@ import Typography from '@mui/material/Typography';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import Image from 'src/components/image';
 import Carousel, { useCarousel, CarouselDots, CarouselArrows } from 'src/components/carousel';
 
@@ -18,6 +20,9 @@ type Props = {
 };
 
 export default function TravelTestimonial({ testimonials }: Props) {
+  
+  const {renderLanguage} = useLanguage()
+
   const mdUp = useResponsive('up', 'md');
 
   const carousel = useCarousel({
@@ -46,7 +51,7 @@ export default function TravelTestimonial({ testimonials }: Props) {
               textAlign: { xs: 'center', md: 'left' },
             }}
           >
-            What Our Customer Say
+            {renderLanguage('რას ამბობენ ჩვენი კლიენტები:', 'What Our Customer Say')}
           </Typography>
 
           <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>

@@ -21,16 +21,22 @@ const SUMMARY = [
   {
     title: 'Professional Tour Guides',
     description: 'Nunc nonummy metus. Donec elit libero',
+    titleGeo: 'პროფესიონალური ტურები',
+    descriptionGeo: 'რამე თესლი ტექსტი',
     icon: '/assets/icons/ic_popularity.svg',
   },
   {
     title: 'Customer Satisfaction',
     description: 'Nunc nonummy metus. Donec elit libero',
+    titleGeo: 'ძაალიან დაკმაყოფილებული კლიენტები ;)',
+    descriptionGeo: 'აქაც რამე თესლი ტექსტი',
     icon: '/assets/icons/ic_reputation.svg',
   },
   {
     title: 'Secure Payment',
     description: 'Nunc nonummy metus. Donec elit libero',
+    titleGeo: 'დაცული გადახდები??!! იდკ',
+    descriptionGeo: 'კი, აქაც რამე თესლი ტექსტი',
     icon: '/assets/icons/ic_secure_payment.svg',
   },
 ];
@@ -67,7 +73,7 @@ export default function TravelLandingIntroduce() {
           <Typography variant="h2" sx={{fontFeatureSettings: "'case' on"}}>{renderLanguage('აღმოაჩინე განსხვავებული სამოგზაურო გეგმა', 'Explore A Different Way To Travel')}</Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            Cras ultricies mi eu turpis hendrerit fringilla. Nulla consequat massa quis enim.
+            {renderLanguage('საკმაოდ თესლი ტურები ჩვენთან', 'Cras ultricies mi eu turpis hendrerit fringilla. Nulla consequat massa quis enim.')}
           </Typography>
         </Stack>
       </Container>
@@ -98,11 +104,12 @@ export default function TravelLandingIntroduce() {
           }}
         >
           <Typography variant="overline" sx={{ color: 'text.disabled' }}>
-            Device
+          {renderLanguage('მოწყობილობა', 'Device')}
           </Typography>
 
           <Typography variant="h4" sx={{ my: 3 }}>
-            The More Important the Work
+            
+            {renderLanguage('აქ ვერ გავიგე ძმაო, რა წერია', 'The More Important the Work')}
           </Typography>
 
           <Stack
@@ -116,7 +123,7 @@ export default function TravelLandingIntroduce() {
               '&:hover': { opacity: 0.72 },
             }}
           >
-            <Iconify icon="carbon:play" width={24} sx={{ mr: 1 }} /> Watch Video
+            <Iconify icon="carbon:play" width={24} sx={{ mr: 1 }} /> {renderLanguage('ნახეთ ვიდეო', 'Watch Video')}
           </Stack>
         </Card>
 
@@ -153,10 +160,10 @@ export default function TravelLandingIntroduce() {
                 }}
               />
 
-              <Typography variant="h5">{value.title}</Typography>
+              <Typography variant="h5">{renderLanguage(value.titleGeo, value.title)}</Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {value.description}
+                {renderLanguage(value.descriptionGeo, value.description)}
               </Typography>
             </Stack>
           ))}
