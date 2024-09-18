@@ -54,7 +54,7 @@ export default function TravelNewsletter() {
                 textAlign: { xs: 'center', md: 'left' },
               }}
             >
-              <Typography variant="h2">Newsletter{renderLanguage('განცხადება(?)', 'Newsletter')}</Typography>
+              <Typography variant="h2">{renderLanguage('განცხადება(?)', 'Newsletter')}</Typography>
 
               <Typography>
               {renderLanguage('დარეგისტრირდი და მიიღე ცხელცხელი დედისტმტვყნელი შეთავაზებები', 'Sign up now to receive hot special offers')}
