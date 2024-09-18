@@ -26,6 +26,9 @@ type Props = {
 };
 
 export default function TravelLandingToursByCity({ tours }: Props) {
+
+  const {renderLanguage} = useLanguage()
+
   const mdUp = useResponsive('up', 'md');
 
   const viewAllBtn = (
@@ -56,10 +59,10 @@ export default function TravelLandingToursByCity({ tours }: Props) {
         }}
       >
         <Stack spacing={3}>
-          <Typography variant="h2">Tours By City</Typography>
+          <Typography variant="h2">{renderLanguage('ტურები ქალაქების მიხედვით', 'Tours By City')}</Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            {`Our Featured Tours can help you find the trip that's perfect for you!`}
+            {renderLanguage('აქ თესლი ტურებით თესლად იპოვით ტურებს ქალაქების მიხედვით', `Our Featured Tours can help you find the trip that's perfect for you!`)}
           </Typography>
         </Stack>
 

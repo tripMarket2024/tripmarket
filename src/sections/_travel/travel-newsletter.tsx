@@ -11,12 +11,16 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import { bgGradient } from 'src/theme/css';
+import { useLanguage } from 'src/contexts/language-context';
 
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function TravelNewsletter() {
+
+  const {renderLanguage} = useLanguage()
+
   const theme = useTheme();
 
   const mdUp = useResponsive('up', 'md');
@@ -50,17 +54,17 @@ export default function TravelNewsletter() {
                 textAlign: { xs: 'center', md: 'left' },
               }}
             >
-              <Typography variant="h2">Newsletter</Typography>
+              <Typography variant="h2">Newsletter{renderLanguage('განცხადება(?)', 'Newsletter')}</Typography>
 
               <Typography>
-                Sign up now to receive hot special offers
-                <br /> and information about the best tours!
+              {renderLanguage('დარეგისტრირდი და მიიღე ცხელცხელი დედისტმტვყნელი შეთავაზებები', 'Sign up now to receive hot special offers')}
+                <br />{renderLanguage('და ინფორმაცია ტურების შესახებ', 'and information about the best tours!')}
               </Typography>
 
               <TextField
                 fullWidth
                 hiddenLabel
-                placeholder="Enter your email"
+                placeholder={renderLanguage('შეიყვანეთ ელ-ფოსტა', 'Enter your email')}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
