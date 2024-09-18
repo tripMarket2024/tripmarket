@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import { ITourProps } from 'src/types/tour';
 
 import TravelTourItem from '../list/travel-tour-item';
@@ -18,6 +20,9 @@ type Props = {
 };
 
 export default function TravelLandingTourFeatured({ tours }: Props) {
+
+  const {renderLanguage} = useLanguage()
+
   return (
     <Container
       sx={{
@@ -25,10 +30,10 @@ export default function TravelLandingTourFeatured({ tours }: Props) {
       }}
     >
       <Stack spacing={3} sx={{ textAlign: 'center' }}>
-        <Typography variant="h3">Featured Tours</Typography>
+        <Typography variant="h3">{renderLanguage('თესლი ტურები', 'Featured Tours')}</Typography>
 
         <Typography sx={{ color: 'text.secondary' }}>
-          {`Our Featured Tours can help you find the trip that's perfect for you!`}
+          {renderLanguage('ჩვენი დაფიჩერებული ტურები დაგეხმარებათ თქვენთვის საუკეთესო ტურის პოვნაშიიიიიი', `Our Featured Tours can help you find the trip that's perfect for you!`)}
         </Typography>
       </Stack>
 
@@ -57,7 +62,7 @@ export default function TravelLandingTourFeatured({ tours }: Props) {
           variant="outlined"
           color="inherit"
         >
-          View All Tours
+          {renderLanguage('ყველა ტურის ნახვა', 'View All Tours')}
         </Button>
       </Box>
     </Container>

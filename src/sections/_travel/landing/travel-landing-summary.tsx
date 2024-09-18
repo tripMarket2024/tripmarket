@@ -5,6 +5,8 @@ import Typography from '@mui/material/Typography';
 
 import { fShortenNumber } from 'src/utils/format-number';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import Image from 'src/components/image';
 import CountUp from 'src/components/count-up';
 
@@ -14,21 +16,25 @@ const SUMMARY = [
   {
     total: 130,
     description: 'Air tickets sold',
+    descriptionGeo: 'ქრება-ჩნდება',
     icon: '/assets/icons/travel/ic_travel_tickets.svg',
   },
   {
     total: 196,
     description: 'Tours booked',
+    descriptionGeo: 'ტყნაურობს',
     icon: '/assets/icons/travel/ic_travel_booking.svg',
   },
   {
     total: 10670,
     description: 'Site visitors',
+    descriptionGeo: 'იბრძვის',
     icon: '/assets/icons/travel/ic_travel_site_visitors.svg',
   },
   {
     total: 877,
     description: 'Verified hotels',
+    descriptionGeo: 'მეტი რა ჩემი ყლე გინდათ',
     icon: '/assets/icons/travel/ic_travel_verified_hotels.svg',
   },
 ];
@@ -36,6 +42,9 @@ const SUMMARY = [
 // ----------------------------------------------------------------------
 
 export default function TravelLandingSummary() {
+
+  const {renderLanguage} = useLanguage()
+
   return (
     <Container
       sx={{
@@ -51,11 +60,10 @@ export default function TravelLandingSummary() {
           mb: { xs: 8, md: 10 },
         }}
       >
-        <Typography variant="h2">Fastest Way to Book over 450 Great Tours</Typography>
+        <Typography variant="h2"> {renderLanguage('ყველაზე ჩქარი გზა ტურების დასაჯავშვნად', 'Fastest Way to Book over 450 Great Tours')}</Typography>
 
         <Typography sx={{ color: 'text.secondary' }}>
-          Since wire-frame renderings are relatively simple and fast to calculate, they are often
-          used in cases
+          {renderLanguage('აქ ნონსენსი ეწერა ინგლისურად, საბიკ შენ პროსტა თქვი რა გინდა', 'Since wire-frame renderings are relatively simple and fast to calculate, they are often used in cases')}
         </Typography>
       </Stack>
 
@@ -86,7 +94,7 @@ export default function TravelLandingSummary() {
               />
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary' }}> {value.description} </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>{renderLanguage(value.descriptionGeo, value.description)} </Typography>
           </Stack>
         ))}
       </Box>

@@ -18,12 +18,30 @@ import { ITourProps } from 'src/types/tour';
 // ----------------------------------------------------------------------
 
 const ROWS = [
-  'First Class Flights',
-  '5 Star Accommodations',
-  'Inclusive Packages',
-  'Latest Model Vehicles',
-  'Handpicked Hotels',
-  'Accesibility managment',
+  {
+    rowText: 'First Class Flights',
+    rowTextGeo: 'პირველი კლასის ფრენები'
+  },
+  {
+    rowText: '5 Star Accommodations',
+    rowTextGeo: '5 ვარსკვლავიანი თესლობბები'
+  },
+  {
+    rowText: 'Latest Model Vehicles',
+    rowTextGeo: 'ბოლო დონის ტრანსპორტი'
+  },
+  {
+    rowText: 'Handpicked Hotels',
+    rowTextGeo: 'კაი კაი სასტუმროები'
+  },
+  {
+    rowText: 'Accesibility managment',
+    rowTextGeo: 'კარგად ნარჩევი ბოზები'
+  },
+  {
+    rowText: 'First Class Flights',
+    rowTextGeo: 'კიდე რამე'
+  },
 ];
 
 // ----------------------------------------------------------------------
@@ -33,6 +51,9 @@ type Props = {
 };
 
 export default function TravelLandingFavoriteDestinations({ tours }: Props) {
+
+  const {renderLanguage} = useLanguage()
+
   return (
     <Container
       sx={{
@@ -47,16 +68,15 @@ export default function TravelLandingFavoriteDestinations({ tours }: Props) {
         justifyContent={{ md: 'space-between' }}
       >
         <Grid xs={12} md={4}>
-          <Typography variant="h2">Our Favorite Destinations</Typography>
+          <Typography variant="h2">{renderLanguage('ჩვენი საყვარელი ადგილები!', 'Our Favorite destinations')}</Typography>
 
           <Typography sx={{ my: 3, color: 'text.secondary' }}>
-            Since wire-frame renderings are relatively simple and fast to calculate, they are often
-            used in cases
+            {renderLanguage('რაამმე გრძელი აღწერის ტექსტი, სამუშაო გაქვს საბიკ', 'Since wire-frame renderings are relatively simple and fast to calculate, they are often')}
           </Typography>
 
           <Stack spacing={2}>
-            {ROWS.map((line) => (
-              <Stack key={line} direction="row" alignItems="center" sx={{ typography: 'body1' }}>
+            {ROWS.map((row) => (
+              <Stack key={row.rowText} direction="row" alignItems="center" sx={{ typography: 'body1' }}>
                 <Box
                   sx={{
                     mr: 2,
@@ -66,7 +86,7 @@ export default function TravelLandingFavoriteDestinations({ tours }: Props) {
                     bgcolor: 'primary.main',
                   }}
                 />
-                {line}
+                {renderLanguage(row.rowTextGeo, row.rowText)}
               </Stack>
             ))}
           </Stack>
