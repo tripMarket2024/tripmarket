@@ -68,7 +68,7 @@ export default function TravelPostView() {
               recentPosts={{ list: _travelPosts.slice(-4) }}
               advertisement={{
                 title: 'Advertisement',
-                description: 'Duis leo. Donec orci lectus, aliquam ut, faucibus non',
+                description: 'აღწერა',
                 imageUrl: _mock.image.travel(9),
                 path: '',
               }}
