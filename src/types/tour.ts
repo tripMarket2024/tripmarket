@@ -5,14 +5,30 @@ import { ISocialLinks } from './socials';
 
 export type ITourProps = {
   id: string;
-  slug: string;
+  slug: {
+    id: number;
+    title_ka: string;
+    title_eng: string;
+  };
   price: number;
   heroUrl: string;
   createdAt: Date;
   coverUrl: string;
-  location: string;
+  location: {
+    code: string;
+    label: string;
+    phone: string;
+    label_ka: string;
+    suggested?: boolean;
+  };
   duration: string;
-  continent: string;
+  continent: {
+    code: string;
+    label: string;
+    phone: string;
+    label_ka: string;
+    suggested?: boolean;
+  };
   priceSale: number;
   gallery: string[];
   favorited: boolean;

@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { useBoundingClientRect } from 'src/hooks/use-bounding-client-rect';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
@@ -44,6 +46,8 @@ export default function TravelLandingIntroduce() {
 
   const offsetLeft = container && container.left + 20;
 
+  const {renderLanguage} = useLanguage()
+
   return (
     <Box
       sx={{
@@ -60,7 +64,7 @@ export default function TravelLandingIntroduce() {
             textAlign: { xs: 'center', md: 'unset' },
           }}
         >
-          <Typography variant="h2">Explore A Different Way To Travel</Typography>
+          <Typography variant="h2" sx={{fontFeatureSettings: "'case' on"}}>{renderLanguage('აღმოაჩინე განსხვავებული სამოგზაურო გეგმა', 'Explore A Different Way To Travel')}</Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
             Cras ultricies mi eu turpis hendrerit fringilla. Nulla consequat massa quis enim.

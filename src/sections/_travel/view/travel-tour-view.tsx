@@ -54,7 +54,7 @@ export default function TravelTourView() {
           links={[
             { name: 'Home', href: '/' },
             { name: 'Tours', href: paths.travel.tours },
-            { name: _mockTour.slug },
+            { name: _mockTour.slug.title_eng },
           ]}
           sx={{ mt: 3, mb: 5 }}
         />
