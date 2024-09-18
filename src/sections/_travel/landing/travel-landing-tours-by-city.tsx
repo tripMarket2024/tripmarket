@@ -12,6 +12,8 @@ import { RouterLink } from 'src/routes/components';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
 
@@ -99,6 +101,8 @@ type TourItemProps = {
 function TourItem({ tour }: TourItemProps) {
   const { coverUrl, location } = tour;
 
+  const { renderLanguage } = useLanguage();
+
   return (
     <Link component={RouterLink} href={paths.travel.tour} color="inherit" underline="none">
       <Paper
@@ -119,7 +123,7 @@ function TourItem({ tour }: TourItemProps) {
 
           <Stack spacing={0.5}>
             <TextMaxLine variant="h6" line={1}>
-              {location}
+              {renderLanguage(location.label_ka, location.label)}
             </TextMaxLine>
 
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>

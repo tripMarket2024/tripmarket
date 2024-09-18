@@ -7,6 +7,8 @@ import { alpha, useTheme } from '@mui/material/styles';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
+import { useLanguage } from 'src/contexts/language-context';
+
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
@@ -106,6 +108,8 @@ function DestinationItem({ tour, order }: DestinationItemProps) {
 
   const { location, continent, coverUrl } = tour;
 
+  const {renderLanguage} = useLanguage()
+
   return (
     <Box
       sx={{
@@ -116,7 +120,7 @@ function DestinationItem({ tour, order }: DestinationItemProps) {
       }}
     >
       <Image
-        alt={location}
+        alt={location.label}
         src={coverUrl}
         ratio={(!mdUp && '1/1') || (order && '1/1') || '4/6'}
         overlay={`linear-gradient(to bottom, ${alpha(theme.palette.common.black, 0)} 0%, ${
@@ -136,13 +140,13 @@ function DestinationItem({ tour, order }: DestinationItemProps) {
         }}
       >
         <TextMaxLine variant="h5" line={1}>
-          {location}
+          {renderLanguage(location.label_ka, location.label)}
         </TextMaxLine>
 
         <Stack direction="row" alignItems="center">
           <Iconify icon="carbon:location" sx={{ mr: 1, color: 'primary.main' }} />
           <TextMaxLine variant="body2" line={1} sx={{ opacity: 0.72 }}>
-            {continent}
+            {renderLanguage(continent.label_ka, continent.label)}
           </TextMaxLine>
         </Stack>
       </Stack>

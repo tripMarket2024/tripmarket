@@ -1,9 +1,14 @@
+'use client'
+
+import { useState } from 'react';
+
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import { Menu, MenuItem } from '@mui/material';
 import Container from '@mui/material/Container';
 import { useTheme } from '@mui/material/styles';
 
@@ -13,6 +18,7 @@ import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import { bgBlur } from 'src/theme/css';
+import { Language, useLanguage } from 'src/contexts/language-context';
 
 import Logo from 'src/components/logo';
 import Label from 'src/components/label';
@@ -37,6 +43,16 @@ export default function Header({ headerOnDark }: Props) {
   const offset = useOffSetTop();
 
   const mdUp = useResponsive('up', 'md');
+
+  const {renderLanguage, changeLanguage, language} = useLanguage()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = (): void => {
+    setAnchorEl(null);
+  };
 
   const renderContent = (
     <>
@@ -80,7 +96,38 @@ export default function Header({ headerOnDark }: Props) {
       <Stack spacing={2} direction="row" alignItems="center" justifyContent="flex-end">
         <Stack spacing={1} direction="row" alignItems="center">
           <Searchbar />
-
+          <Button onClick={handleClick} >
+                {language === Language.KA ? 'ქართული' : 'English'}
+              </Button>
+          <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+              sx={{ color: 'black' }}
+            >
+              <MenuItem
+                onClick={() => {
+                  changeLanguage(Language.KA);
+                  handleClose();
+                }}
+                sx={{ fontSize: '14px' }}
+              >
+                ქართული
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  changeLanguage(Language.ENG);
+                  handleClose();
+                }}
+                sx={{ fontSize: '14px' }}
+              >
+                English
+              </MenuItem>
+            </Menu>
           <SettingsButton />
         </Stack>
 
@@ -91,10 +138,11 @@ export default function Header({ headerOnDark }: Props) {
           target="_blank"
           rel="noopener"
           sx={{
+            fontFeatureSettings: "'case' on",
             display: { xs: 'none', md: 'inline-flex' },
           }}
         >
-          Buy Now
+          {renderLanguage('იყიდე ახლავე', 'Buy Now')}
         </Button>
       </Stack>
 

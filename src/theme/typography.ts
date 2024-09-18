@@ -31,28 +31,17 @@ declare module '@mui/material/styles' {
   }
 }
 
-export const primaryFont = Public_Sans({
-  weight: ['400', '500', '600', '700', '800', '900'],
-  subsets: ['latin'],
-  display: 'swap',
-  fallback: ['Helvetica', 'Arial', 'sans-serif'],
-});
+export const primaryFont = 'UpperCaseGeo';
 
-export const secondaryFont = Barlow({
-  weight: ['400', '500', '600', '700', '800', '900'],
-  subsets: ['latin'],
-  display: 'swap',
-  fallback: ['Helvetica', 'Arial', 'sans-serif'],
-});
-
+export const secondaryFont = 'UpperCaseGeo';
 // ----------------------------------------------------------------------
 
 // LEARN MORE
 // https://nextjs.org/docs/basic-features/font-optimization#google-fonts
 
 export const typography = {
-  fontFamily: primaryFont.style.fontFamily,
-  fontSecondaryFamily: secondaryFont.style.fontFamily,
+  fontFamily: 'UpperCaseGeo',
+  fontSecondaryFamily: secondaryFont,
   fontWeightRegular: 400,
   fontWeightMedium: 500,
   fontWeightSemiBold: 600,
@@ -60,43 +49,43 @@ export const typography = {
   h1: {
     fontWeight: 700,
     lineHeight: 80 / 64,
-    fontSize: pxToRem(40),
-    fontFamily: secondaryFont.style.fontFamily,
+    fontSize: pxToRem(26),
+    fontFamily: secondaryFont,
     ...responsiveFontSizes({ sm: 52, md: 58, lg: 64 }),
   },
   h2: {
     fontWeight: 700,
     lineHeight: 64 / 48,
     fontSize: pxToRem(32),
-    fontFamily: secondaryFont.style.fontFamily,
+    fontFamily: secondaryFont,
     ...responsiveFontSizes({ sm: 40, md: 44, lg: 48 }),
   },
   h3: {
     fontWeight: 700,
     lineHeight: 1.5,
     fontSize: pxToRem(24),
-    fontFamily: secondaryFont.style.fontFamily,
+    fontFamily: secondaryFont,
     ...responsiveFontSizes({ sm: 26, md: 30, lg: 32 }),
   },
   h4: {
     fontWeight: 600,
     lineHeight: 1.5,
     fontSize: pxToRem(20),
-    fontFamily: secondaryFont.style.fontFamily,
+    fontFamily: secondaryFont,
     ...responsiveFontSizes({ sm: 20, md: 24, lg: 24 }),
   },
   h5: {
     fontWeight: 600,
     lineHeight: 1.5,
     fontSize: pxToRem(18),
-    fontFamily: secondaryFont.style.fontFamily,
+    fontFamily: secondaryFont,
     ...responsiveFontSizes({ sm: 19, md: 20, lg: 20 }),
   },
   h6: {
     fontWeight: 600,
     lineHeight: 28 / 18,
     fontSize: pxToRem(17),
-    fontFamily: secondaryFont.style.fontFamily,
+    fontFamily: secondaryFont,
     ...responsiveFontSizes({ sm: 18, md: 18, lg: 18 }),
   },
   subtitle1: {

@@ -10,6 +10,7 @@ import { LocalizationProvider } from 'src/locales';
 import ProgressBar from 'src/components/progress-bar';
 import { MotionLazy } from 'src/components/animate/motion-lazy';
 import { SettingsDrawer, SettingsProvider } from 'src/components/settings';
+import { LanguageProvider } from '../contexts/language-context';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ type Props = {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang="en" className={primaryFont.className}>
+    <html lang="en" className={primaryFont}>
       <body>
         <LocalizationProvider>
           <SettingsProvider
@@ -51,11 +52,13 @@ export default function RootLayout({ children }: Props) {
             }}
           >
             <ThemeProvider>
-              <MotionLazy>
-                <ProgressBar />
-                <SettingsDrawer />
-                {children}
-              </MotionLazy>
+              <LanguageProvider>
+                <MotionLazy>
+                  <ProgressBar />
+                  <SettingsDrawer />
+                  {children}
+                </MotionLazy>
+              </LanguageProvider>
             </ThemeProvider>
           </SettingsProvider>
         </LocalizationProvider>

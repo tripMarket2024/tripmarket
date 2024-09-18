@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import { fShortenNumber } from 'src/utils/format-number';
 
 import { _socials } from 'src/_mock';
+import { useLanguage } from 'src/contexts/language-context';
 
 import Iconify from 'src/components/iconify';
 
@@ -43,6 +44,8 @@ export default function TravelTourDetailsHeader({ tour }: Props) {
     setFavorite(event.target.checked);
   }, []);
 
+  const {renderLanguage} = useLanguage()
+
   return (
     <>
       <Stack
@@ -53,7 +56,7 @@ export default function TravelTourDetailsHeader({ tour }: Props) {
         }}
       >
         <Typography variant="h3" component="h1" sx={{ flexGrow: 1, pr: { md: 10 } }}>
-          {slug}
+          {renderLanguage(slug.title_ka, slug.title_eng)}
         </Typography>
 
         <Stack direction="row" alignItems="center" flexShrink={0}>
@@ -85,7 +88,7 @@ export default function TravelTourDetailsHeader({ tour }: Props) {
         </Stack>
 
         <Stack direction="row" alignItems="center" sx={{ typography: 'body2' }}>
-          <Iconify icon="carbon:location" sx={{ mr: 0.5 }} /> {location}
+          <Iconify icon="carbon:location" sx={{ mr: 0.5 }} /> {renderLanguage(location.label_ka, location.label)}
         </Stack>
 
         <Stack direction="row" alignItems="center">
