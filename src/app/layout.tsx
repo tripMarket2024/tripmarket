@@ -10,6 +10,7 @@ import { LocalizationProvider } from 'src/locales';
 import ProgressBar from 'src/components/progress-bar';
 import { MotionLazy } from 'src/components/animate/motion-lazy';
 import { SettingsDrawer, SettingsProvider } from 'src/components/settings';
+import { AuthProvider } from 'src/contexts/auth-context';
 import { LanguageProvider } from '../contexts/language-context';
 
 // ----------------------------------------------------------------------
@@ -52,13 +53,15 @@ export default function RootLayout({ children }: Props) {
             }}
           >
             <ThemeProvider>
-              <LanguageProvider>
-                <MotionLazy>
-                  <ProgressBar />
-                  <SettingsDrawer />
-                  {children}
-                </MotionLazy>
-              </LanguageProvider>
+              <AuthProvider>
+                <LanguageProvider>
+                  <MotionLazy>
+                    <ProgressBar />
+                    <SettingsDrawer />
+                    {children}
+                  </MotionLazy>
+                </LanguageProvider>
+              </AuthProvider>
             </ThemeProvider>
           </SettingsProvider>
         </LocalizationProvider>

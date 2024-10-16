@@ -1,140 +1,217 @@
 'use client';
 
-import { add } from 'date-fns';
-import { useState, useCallback } from 'react';
+import dayjs from 'dayjs';
+import * as Yup from 'yup';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm, Controller } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import InputAdornment from '@mui/material/InputAdornment';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
-import { _mock } from 'src/_mock';
+import FormProvider from 'src/components/hook-form';
 
-import EcommerceAccountVoucherItem from '../account/ecommerce-account-voucher-item';
+const EcommerceAccountPersonalSchema = Yup.object().shape({
+  start_date: Yup.string().required('Start date is required'),
+  end_date: Yup.string().required('End date is required'),
+  location: Yup.string().required('Location is required'),
+  description: Yup.string().required('Description is required'),
+  price: Yup.number().required('Price is required'),
+  discount: Yup.number().nullable(),
+  images: Yup.string().nullable(), // Changed to single URL for simplicity
+});
 
-// ----------------------------------------------------------------------
+const defaultValues = {
+  start_date: dayjs(new Date()).toISOString(),
+  end_date: dayjs(new Date()).toISOString(),
+  location: '',
+  description: '',
+  price: 0,
+  discount: null,
+  images: '',
+};
 
-const TABS = ['All Vouchers', 'Latest', 'Popular', 'Expiring'];
+export default function EcommerceAccountPersonalView() {
+  const methods = useForm({
+    resolver: yupResolver(EcommerceAccountPersonalSchema),
+    defaultValues,
+  });
 
-const VOUCHERS = [
-  {
-    id: _mock.id(1),
-    type: 'shipping',
-    label: 'Shipping',
-    title: '6% off',
-    description: 'Min. Spend $0',
-    dueOn: add(new Date(), { days: 1 }),
-  },
-  {
-    id: _mock.id(2),
-    type: 'shipping',
-    label: 'Shipping',
-    title: '6% off',
-    description: 'Min. Spend $0',
-    dueOn: add(new Date(), { days: 2 }),
-  },
-  {
-    id: _mock.id(3),
-    type: 'all',
-    label: 'All Categories',
-    title: '6% off',
-    description: 'Min. Spend $0 Capped at $10',
-    dueOn: add(new Date(), { days: 1 }),
-  },
-  {
-    id: _mock.id(4),
-    type: 'shipping',
-    label: 'Shipping',
-    title: '6% off',
-    description: 'Min. Spend $0 Capped at $10',
-    dueOn: add(new Date(), { days: 2 }),
-  },
-  {
-    id: _mock.id(5),
-    type: 'category',
-    label: 'Men Clothes',
-    title: 'Up to 50%',
-    description: 'Min. Spend $0 Capped at $10',
-    dueOn: add(new Date(), { days: 3 }),
-  },
-  {
-    id: _mock.id(6),
-    type: 'shipping',
-    label: 'Shipping',
-    title: '6% off',
-    description: 'Min. Spend $0',
-    dueOn: add(new Date(), { days: 4 }),
-  },
-  {
-    id: _mock.id(7),
-    type: 'shipping',
-    label: 'Shipping',
-    title: '6% off',
-    description: 'Min. Spend $0',
-    dueOn: add(new Date(), { days: 5 }),
-  },
-];
+  const {
+    reset,
+    handleSubmit,
+    formState: { isSubmitting },
+    control,
+  } = methods;
 
-// ----------------------------------------------------------------------
-
-export default function EcommerceAccountVouchersView() {
-  const [tab, setTab] = useState('All Vouchers');
-
-  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
-    setTab(newValue);
-  }, []);
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      console.log('DATA:', data);
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      reset();
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
   return (
-    <>
+    <FormProvider methods={methods} onSubmit={onSubmit}>
       <Typography variant="h5" sx={{ mb: 3 }}>
-        Vouchers
+        Add Tour
       </Typography>
 
-      <TextField
-        fullWidth
-        label="Enter voucher code"
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <Button size="large" variant="contained" color="inherit" sx={{ mr: -1 }}>
-                Redeem
-              </Button>
-            </InputAdornment>
-          ),
-        }}
-      />
-
-      <Divider sx={{ my: 3, borderStyle: 'dashed' }} />
-
-      <Tabs
-        value={tab}
-        scrollButtons="auto"
-        variant="scrollable"
-        allowScrollButtonsMobile
-        onChange={handleChangeTab}
-        sx={{ mb: 3 }}
-      >
-        {TABS.map((category) => (
-          <Tab key={category} value={category} label={category} />
-        ))}
-      </Tabs>
-
-      <Box
-        gap={3}
-        display="grid"
-        gridTemplateColumns={{
-          xs: 'repeat(1, 1fr)',
-          md: 'repeat(2, 1fr)',
-        }}
-      >
-        {VOUCHERS.map((voucher) => (
-          <EcommerceAccountVoucherItem key={voucher.id} voucher={voucher} />
-        ))}
+      <Box sx={{ mb: 3 }}>
+        <Controller
+          name="images"
+          control={control}
+          render={({ field }) => (
+            <TextField {...field} label="Image URL" fullWidth variant="outlined" margin="normal" />
+          )}
+        />
       </Box>
-    </>
+
+      <Box sx={{ mb: 3 }}>
+        <Controller
+          name="location"
+          control={control}
+          render={({ field }) => (
+            <TextField {...field} label="Location" fullWidth variant="outlined" margin="normal" />
+          )}
+        />
+      </Box>
+
+      <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Grid item xs={12} sm={6}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Controller
+              name="start_date"
+              control={control}
+              render={({ field }) => (
+                <DatePicker
+                  {...field}
+                  label="Start Date"
+                  sx={{ width: '100%' }}
+                  onChange={(date) => field.onChange(date)}
+                  value={dayjs(field.value) || null}
+                />
+              )}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Controller
+              name="end_date"
+              control={control}
+              render={({ field }) => (
+                <DatePicker
+                  {...field}
+                  sx={{ width: '100%' }}
+                  label="End Date"
+                  onChange={(date) => field.onChange(date)}
+                  value={dayjs(field.value) || null}
+                />
+              )}
+            />
+          </LocalizationProvider>
+        </Grid>
+      </Grid>
+
+      <Box sx={{ mb: 3 }}>
+        <Controller
+          name="description"
+          control={control}
+          render={({ field }) => (
+            <Box>
+              <Typography variant="subtitle1" sx={{ mb: 1 }}>
+                Description
+              </Typography>
+              <ReactQuill
+                {...field}
+                theme="snow"
+                onChange={field.onChange}
+                value={field.value || ''}
+                modules={QuillModules}
+                formats={QuillFormats}
+              />
+            </Box>
+          )}
+        />
+      </Box>
+
+      <Grid container spacing={2} sx={{ mb: 3 }}>
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="price"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Price"
+                type="number"
+                fullWidth
+                variant="outlined"
+                margin="normal"
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="discount"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Discount"
+                type="number"
+                fullWidth
+                variant="outlined"
+                margin="normal"
+              />
+            )}
+          />
+        </Grid>
+      </Grid>
+
+      <LoadingButton
+        color="inherit"
+        size="large"
+        type="submit"
+        variant="contained"
+        loading={isSubmitting}
+      >
+        Save Changes
+      </LoadingButton>
+    </FormProvider>
   );
 }
+
+const QuillModules = {
+  toolbar: [
+    [{ header: '1' }, { header: '2' }, { font: [] }],
+    [{ list: 'ordered' }, { list: 'bullet' }],
+    ['bold', 'italic', 'underline'],
+    [{ align: [] }],
+    ['link'],
+    ['clean'],
+  ],
+};
+
+const QuillFormats = [
+  'header',
+  'font',
+  'list',
+  'bullet',
+  'bold',
+  'italic',
+  'underline',
+  'align',
+  'link',
+];

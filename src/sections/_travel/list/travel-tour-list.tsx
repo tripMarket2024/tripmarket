@@ -24,7 +24,7 @@ export default function TravelTourList({ tours, loading }: Props) {
           gridTemplateColumns: {
             xs: 'repeat(1, 1fr)',
             sm: 'repeat(2, 1fr)',
-            md: 'repeat(4, 1fr)',
+            md: 'repeat(3, 1fr)',
           },
         }}
       >

@@ -78,7 +78,7 @@ export const pageLinks = [
       { title: 'Compare', path: paths.eCommerce.compare },
       { title: 'Account Personal', path: paths.eCommerce.account.personal },
       { title: 'Account Wishlist', path: paths.eCommerce.account.wishlist },
-      { title: 'Account Vouchers', path: paths.eCommerce.account.vouchers },
+      { title: 'Account Vouchers', path: paths.eCommerce.account.addTour },
       { title: 'Account Orders', path: paths.eCommerce.account.orders },
       { title: 'Account Payment', path: paths.eCommerce.account.payment },
     ],
