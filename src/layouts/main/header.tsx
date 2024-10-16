@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 
@@ -18,6 +18,7 @@ import { useOffSetTop } from 'src/hooks/use-off-set-top';
 import { useResponsive } from 'src/hooks/use-responsive';
 
 import { bgBlur } from 'src/theme/css';
+import { useAuthContext } from 'src/contexts/auth-context';
 import { Language, useLanguage } from 'src/contexts/language-context';
 
 import Logo from 'src/components/logo';
@@ -44,7 +45,7 @@ export default function Header({ headerOnDark }: Props) {
 
   const mdUp = useResponsive('up', 'md');
 
-  const {renderLanguage, changeLanguage, language} = useLanguage()
+  const { renderLanguage, changeLanguage, language } = useLanguage();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>): void => {
@@ -53,6 +54,8 @@ export default function Header({ headerOnDark }: Props) {
   const handleClose = (): void => {
     setAnchorEl(null);
   };
+
+  const { user } = useAuthContext();
 
   const renderContent = (
     <>
@@ -96,45 +99,43 @@ export default function Header({ headerOnDark }: Props) {
       <Stack spacing={2} direction="row" alignItems="center" justifyContent="flex-end">
         <Stack spacing={1} direction="row" alignItems="center">
           <Searchbar />
-          <Button onClick={handleClick} >
-                {language === Language.KA ? 'ქართული' : 'English'}
-              </Button>
+          <Button onClick={handleClick}>{language === Language.KA ? 'ქართული' : 'English'}</Button>
           <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                'aria-labelledby': 'basic-button',
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+            sx={{ color: 'black' }}
+          >
+            <MenuItem
+              onClick={() => {
+                changeLanguage(Language.KA);
+                handleClose();
               }}
-              sx={{ color: 'black' }}
+              sx={{ fontSize: '14px' }}
             >
-              <MenuItem
-                onClick={() => {
-                  changeLanguage(Language.KA);
-                  handleClose();
-                }}
-                sx={{ fontSize: '14px' }}
-              >
-                ქართული
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  changeLanguage(Language.ENG);
-                  handleClose();
-                }}
-                sx={{ fontSize: '14px' }}
-              >
-                English
-              </MenuItem>
-            </Menu>
+              ქართული
+            </MenuItem>
+            <MenuItem
+              onClick={() => {
+                changeLanguage(Language.ENG);
+                handleClose();
+              }}
+              sx={{ fontSize: '14px' }}
+            >
+              English
+            </MenuItem>
+          </Menu>
           <SettingsButton />
         </Stack>
 
         <Button
           variant="contained"
           color="inherit"
-          href={paths.zoneStore}
+          href={user ? paths.eCommerce.account.personal : paths.loginCover}
           target="_blank"
           rel="noopener"
           sx={{
@@ -142,7 +143,7 @@ export default function Header({ headerOnDark }: Props) {
             display: { xs: 'none', md: 'inline-flex' },
           }}
         >
-          {renderLanguage('იყიდე ახლავე', 'Buy Now')}
+          {user ? renderLanguage('პროფილი', 'Account') : renderLanguage('შესვლა', 'Log In')}
         </Button>
       </Stack>
 

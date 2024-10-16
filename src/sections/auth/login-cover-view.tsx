@@ -7,7 +7,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -21,11 +20,14 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { useAuthContext } from 'src/contexts/auth-context';
 
 // ----------------------------------------------------------------------
 
 export default function LoginCoverView() {
   const passwordShow = useBoolean();
+
+  const { login } = useAuthContext();
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required('Email is required').email('That is not an email'),
@@ -52,7 +54,10 @@ export default function LoginCoverView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await login({
+        email: data.email,
+        password: data.password,
+      });
       reset();
       console.log('DATA', data);
     } catch (error) {
@@ -146,15 +151,6 @@ export default function LoginCoverView() {
       <Logo />
 
       {renderHead}
-
-      {renderSocials}
-
-      <Divider sx={{ py: 3 }}>
-        <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-          OR
-        </Typography>
-      </Divider>
-
       {renderForm}
     </>
   );

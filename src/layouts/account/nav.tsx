@@ -18,6 +18,7 @@ import { _mock } from 'src/_mock';
 
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
+import { useAuthContext } from 'src/contexts/auth-context';
 
 // ----------------------------------------------------------------------
 
@@ -28,24 +29,14 @@ const navigations = [
     icon: <Iconify icon="carbon:user" />,
   },
   {
-    title: 'Wishlist',
+    title: 'My tours',
     path: paths.eCommerce.account.wishlist,
     icon: <Iconify icon="carbon:favorite" />,
   },
   {
-    title: 'Vouchers',
-    path: paths.eCommerce.account.vouchers,
+    title: 'Add Tour',
+    path: paths.eCommerce.account.addTour,
     icon: <Iconify icon="carbon:cut-out" />,
-  },
-  {
-    title: 'Orders',
-    path: paths.eCommerce.account.orders,
-    icon: <Iconify icon="carbon:document" />,
-  },
-  {
-    title: 'Payment',
-    path: paths.eCommerce.account.payment,
-    icon: <Iconify icon="carbon:purchase" />,
   },
 ];
 
@@ -58,6 +49,10 @@ type Props = {
 
 export default function Nav({ open, onClose }: Props) {
   const mdUp = useResponsive('up', 'md');
+
+  const { logout } = useAuthContext();
+
+  const {user} = useAuthContext()
 
   const renderContent = (
     <Stack
@@ -90,10 +85,10 @@ export default function Nav({ open, onClose }: Props) {
 
         <Stack spacing={0.5}>
           <TextMaxLine variant="subtitle1" line={1}>
-            Jayvion Simon
+           {user ? user.name : 'User Name'}
           </TextMaxLine>
           <TextMaxLine variant="body2" line={1} sx={{ color: 'text.secondary' }}>
-            nannie_abernathy70@yahoo.com
+          {user ? user.email : 'User Email'}
           </TextMaxLine>
         </Stack>
       </Stack>
@@ -120,6 +115,7 @@ export default function Nav({ open, onClose }: Props) {
             <Iconify icon="carbon:logout" />
           </ListItemIcon>
           <ListItemText
+            onClick={logout}
             primary="Logout"
             primaryTypographyProps={{
               typography: 'body2',

@@ -10,47 +10,29 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { countries } from 'src/assets/data';
-
 import Iconify from 'src/components/iconify';
-import FormProvider, { RHFSelect, RHFTextField, RHFAutocomplete } from 'src/components/hook-form';
-
-// ----------------------------------------------------------------------
-
-const GENDER_OPTIONS = ['Male', 'Female', 'Other'];
-
-// ----------------------------------------------------------------------
+import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { useAuthContext } from 'src/contexts/auth-context';
 
 export default function EcommerceAccountPersonalView() {
   const passwordShow = useBoolean();
 
   const EcommerceAccountPersonalSchema = Yup.object().shape({
-    firstName: Yup.string().required('First name is required'),
-    lastName: Yup.string().required('Last name is required'),
-    emailAddress: Yup.string().required('Email address is required'),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    birthday: Yup.mixed<any>().nullable().required('Birthday is required'),
-    gender: Yup.string().required('Gender is required'),
-    streetAddress: Yup.string().required('Street address is required'),
-    city: Yup.string().required('City is required'),
-    zipCode: Yup.string().required('Zip code is required'),
+    name: Yup.string().required('First name is required'),
+    email: Yup.string().required('Email address is required'),
   });
 
+  const { user } = useAuthContext();
+
   const defaultValues = {
-    firstName: 'Jayvion',
+    name: user ? user.name : '',
     lastName: 'Simon',
-    emailAddress: 'nannie_abernathy70@yahoo.com',
-    phoneNumber: '365-374-4961',
-    birthday: null,
-    gender: 'Male',
-    streetAddress: '',
-    zipCode: '',
-    city: '',
-    country: 'United States',
+    email: user ? user.email : '',
+    phone: user ? user.phone : '',
+    address: user ? user.address : '',
     oldPassword: '',
     newPassword: '',
     confirmNewPassword: '',
@@ -80,7 +62,7 @@ export default function EcommerceAccountPersonalView() {
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Typography variant="h5" sx={{ mb: 3 }}>
-        Personal
+        Personalssss
       </Typography>
 
       <Box
@@ -89,54 +71,14 @@ export default function EcommerceAccountPersonalView() {
         display="grid"
         gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
       >
-        <RHFTextField name="firstName" label="First Name" />
+        <RHFTextField name="name" label="Company name" />
 
-        <RHFTextField name="lastName" label="Last Name" />
+        <RHFTextField name="email" label="Email Address" />
 
-        <RHFTextField name="emailAddress" label="Email Address" />
+        <RHFTextField name="phone" label="Phone Number" />
 
-        <RHFTextField name="phoneNumber" label="Phone Number" />
+        <RHFTextField name="address" label="Street Address" />
 
-        <Controller
-          name="birthday"
-          render={({ field, fieldState: { error } }) => (
-            <DatePicker
-              label="Birthday"
-              slotProps={{
-                textField: {
-                  helperText: error?.message,
-                  error: !!error?.message,
-                },
-              }}
-              {...field}
-              value={field.value}
-            />
-          )}
-        />
-
-        <RHFSelect native name="gender" label="Gender">
-          {GENDER_OPTIONS.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </RHFSelect>
-
-        <RHFTextField name="streetAddress" label="Street Address" />
-
-        <RHFTextField name="zipCode" label="Zip Code" />
-
-        <RHFTextField name="city" label="City" />
-
-        <RHFAutocomplete
-          name="country"
-          type="country"
-          label="Country"
-          placeholder="Choose a country"
-          fullWidth
-          options={countries.map((option) => option.label)}
-          getOptionLabel={(option) => option}
-        />
       </Box>
       <Stack spacing={3} sx={{ my: 5 }}>
         <Typography variant="h5"> Change Password </Typography>
