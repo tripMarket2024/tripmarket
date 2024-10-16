@@ -9,8 +9,6 @@ type Props = {
 export default function EcommerceLayout({ children }: Props) {
   return (
     <>
-      <Header />
-
       {children}
     </>
   );

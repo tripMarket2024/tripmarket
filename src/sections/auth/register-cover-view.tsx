@@ -21,6 +21,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import { useAuthContext } from 'src/contexts/auth-context';
 
 // ----------------------------------------------------------------------
 
@@ -28,10 +29,9 @@ export default function RegisterCoverView() {
   const passwordShow = useBoolean();
 
   const RegisterSchema = Yup.object().shape({
-    fullName: Yup.string()
+    name: Yup.string()
       .required('Full name is required')
-      .min(6, 'Mininum 6 characters')
-      .max(15, 'Maximum 15 characters'),
+      .min(6, 'Mininum 6 characters'),
     email: Yup.string().required('Email is required').email('That is not an email'),
     password: Yup.string()
       .required('Password is required')
@@ -42,7 +42,7 @@ export default function RegisterCoverView() {
   });
 
   const defaultValues = {
-    fullName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -53,6 +53,8 @@ export default function RegisterCoverView() {
     defaultValues,
   });
 
+  const { register } = useAuthContext();
+
   const {
     reset,
     handleSubmit,
@@ -61,7 +63,11 @@ export default function RegisterCoverView() {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await register({
+        email: data.email,
+        password: data.password,
+        name: data.name,
+      });
       reset();
       console.log('DATA', data);
     } catch (error) {
@@ -90,26 +96,10 @@ export default function RegisterCoverView() {
     </Stack>
   );
 
-  const renderSocials = (
-    <Stack direction="row" spacing={2}>
-      <Button fullWidth size="large" color="inherit" variant="outlined">
-        <Iconify icon="logos:google-icon" width={24} />
-      </Button>
-
-      <Button fullWidth size="large" color="inherit" variant="outlined">
-        <Iconify icon="carbon:logo-facebook" width={24} sx={{ color: '#1877F2' }} />
-      </Button>
-
-      <Button color="inherit" fullWidth variant="outlined" size="large">
-        <Iconify icon="carbon:logo-github" width={24} sx={{ color: 'text.primary' }} />
-      </Button>
-    </Stack>
-  );
-
   const renderForm = (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Stack spacing={2.5}>
-        <RHFTextField name="fullName" label="Full Name" />
+        <RHFTextField name="name" label="Company Name" />
 
         <RHFTextField name="email" label="Email address" />
 
@@ -173,14 +163,6 @@ export default function RegisterCoverView() {
       <Logo />
 
       {renderHead}
-
-      {renderSocials}
-
-      <Divider sx={{ py: 3 }}>
-        <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-          OR
-        </Typography>
-      </Divider>
 
       {renderForm}
     </>
