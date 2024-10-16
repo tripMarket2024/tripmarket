@@ -42,8 +42,6 @@ export default function MainLayout({
 
         {children}
       </Box>
-
-      <Footer />
     </Box>
   );
 }
