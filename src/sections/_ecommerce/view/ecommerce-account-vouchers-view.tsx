@@ -16,6 +16,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
 import FormProvider from 'src/components/hook-form';
+import FileUpload from 'src/sections/file-upload/file-upload';
+import React from 'react';
+import { CreateTourMedia } from 'src/app/api/tours/dto/create-tour.dto';
 
 const EcommerceAccountPersonalSchema = Yup.object().shape({
   start_date: Yup.string().required('Start date is required'),
@@ -43,6 +46,9 @@ export default function EcommerceAccountPersonalView() {
     defaultValues,
   });
 
+  const [files, setFiles] = React.useState<File[]>([]);
+  const [uploadedImages, setUploadedImages] = React.useState<CreateTourMedia[]>([]);
+
   const {
     reset,
     handleSubmit,
@@ -60,6 +66,12 @@ export default function EcommerceAccountPersonalView() {
     }
   });
 
+  const handleRemoveImage = (imageToRemove: CreateTourMedia) => {
+    const filteredPhotos = uploadedImages.filter((photo) => photo.url !== imageToRemove.url);
+
+    setUploadedImages(filteredPhotos);
+  };
+
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Typography variant="h5" sx={{ mb: 3 }}>
@@ -67,13 +79,14 @@ export default function EcommerceAccountPersonalView() {
       </Typography>
 
       <Box sx={{ mb: 3 }}>
-        <Controller
+        {/* <Controller
           name="images"
           control={control}
           render={({ field }) => (
             <TextField {...field} label="Image URL" fullWidth variant="outlined" margin="normal" />
           )}
-        />
+        /> */}
+        <FileUpload files={files} setFiles={setFiles} />
       </Box>
 
       <Box sx={{ mb: 3 }}>

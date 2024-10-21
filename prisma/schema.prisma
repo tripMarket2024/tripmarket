@@ -14,30 +14,105 @@ datasource db {
 }
 
 model TravelCompany {
-  id              String   @id @default(uuid())
-  created_date    DateTime @default(now())
-  name            String
-  description_ka  String?
-  description_eng String?
-  address         String?
-  phone           String?  @unique
-  password        String
-  email           String?  @unique
-  website         String?
-  facebook        String?
-  telegram        String?
-  instagram       String?
-  youtube         String?
-  twitter         String?
-  linkedin        String?
-  profile_picture Media[]
+  id                  String      @id @default(uuid())
+  created_date        DateTime    @default(now())
+  name                String
+  description_ka      String?
+  description_eng     String?
+  address             String?
+  phone               String?     @unique
+  password            String
+  email               String?     @unique
+  website             String?
+  facebook            String?
+  telegram            String?
+  instagram           String?
+  youtube             String?
+  twitter             String?
+  linkedin            String?
+  profile_picture     String?
+  profile_picture_url String?
+  tours               Tours[]
+  tour_agents         TourAgent[]
 }
 
 model Media {
-  id              String        @id @default(cuid())
-  created_date    DateTime      @default(now())
-  url             String
-  type            String
-  travelCompany   TravelCompany @relation(fields: [travelCompanyId], references: [id])
-  travelCompanyId String
+  id           String   @id @default(uuid())
+  created_date DateTime @default(now())
+  url          String
+  type         String
+  image_name   String
+  tour_id      String
+  tour         Tours    @relation(fields: [tour_id], references: [id])
+}
+
+model Tours {
+  id                String              @id @default(uuid())
+  country           String
+  city              String?
+  name              String
+  start_date        DateTime
+  end_date          DateTime
+  price             Float
+  discount          Float?
+  description_ka    String?
+  description_eng   String?
+  media             Media[]
+  travel_company_id String
+  travel_company    TravelCompany       @relation(fields: [travel_company_id], references: [id])
+  features          String
+  tours_agents      ToursAgents[]
+  tour_features     TourFeaturesTours[]
+  created_date      DateTime            @default(now())
+  updated_date      DateTime            @updatedAt
+}
+
+model TourFeatures {
+  id           String              @id @default(uuid())
+  created_date DateTime            @default(now())
+  name_ka      String
+  name_eng     String
+  tours        TourFeaturesTours[]
+}
+
+model TourFeaturesTours {
+  id              String       @id @default(uuid())
+  created_date    DateTime     @default(now())
+  tour_id         String
+  tour_feature_id String
+  tour            Tours        @relation(fields: [tour_id], references: [id])
+  tour_feature    TourFeatures @relation(fields: [tour_feature_id], references: [id])
+}
+
+model ToursAgents {
+  id            String    @id @default(uuid())
+  created_date  DateTime  @default(now())
+  tour_id       String
+  tour_agent_id String
+  tour          Tours     @relation(fields: [tour_id], references: [id])
+  tour_agent    TourAgent @relation(fields: [tour_agent_id], references: [id])
+}
+
+model TourAgent {
+  id                  String        @id @default(uuid())
+  created_date        DateTime      @default(now())
+  name                String
+  last_name           String
+  description_ka      String?
+  description_eng     String?
+  address             String?
+  phone               String?       @unique
+  email               String?       @unique
+  website             String?
+  facebook            String?
+  telegram            String?
+  instagram           String?
+  youtube             String?
+  twitter             String?
+  linkedin            String?
+  profile_picture     String?
+  profile_picture_url String?
+  travel_company_id   String
+  travel_company      TravelCompany @relation(fields: [travel_company_id], references: [id])
+  tours_agents        ToursAgents[]
 }

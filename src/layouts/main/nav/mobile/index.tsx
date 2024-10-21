@@ -11,6 +11,9 @@ import { usePathname } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { useAuthContext } from 'src/contexts/auth-context';
+import { useLanguage } from 'src/contexts/language-context';
+
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -32,6 +35,10 @@ export default function NavMobile({ data }: NavProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  const { user } = useAuthContext();
+
+  const { renderLanguage } = useLanguage();
 
   return (
     <>
@@ -63,11 +70,10 @@ export default function NavMobile({ data }: NavProps) {
               fullWidth
               variant="contained"
               color="inherit"
-              href={paths.zoneStore}
-              target="_blank"
+              href={user ? paths.eCommerce.account.personal : paths.loginCover}
               rel="noopener"
             >
-              Buy Now
+              {renderLanguage('შესვლა', 'Log In')}
             </Button>
           </Stack>
         </Scrollbar>
