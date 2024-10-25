@@ -16,7 +16,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       price: Yup.number().required('Price is required').positive('Price must be a positive number'),
       description_ka: Yup.string().nullable(),
       description_eng: Yup.string().nullable(),
-      tour_features: Yup.array().of(Yup.string()).nullable(),
+      tour_features: Yup.array()
+        .of(
+          Yup.object().shape({
+            id: Yup.string().required('Feature ID is required'),
+            created_date: Yup.date().required('Feature created date is required'),
+            name_ka: Yup.string().required('Feature name in Georgian is required'),
+            name_eng: Yup.string().required('Feature name in English is required'),
+          })
+        )
+        .nullable(),
       media: Yup.array()
         .of(
           Yup.object().shape({
@@ -25,7 +34,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
             image_name: Yup.string().required('Image name is required'),
           })
         )
-        .required('Media is required'),
+        .nullable(),
       tour_agent_id: Yup.string().nullable(),
       name: Yup.string().required('Name is required'),
       discount: Yup.number().nullable().min(0, 'Discount must be at least 0'),
@@ -83,8 +92,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     if (data.tour_features) {
       await prisma.tourFeaturesTours.createMany({
-        data: data.tour_features.map((featureId) => ({
-          tour_feature_id: featureId,
+        data: data.tour_features.map((feature) => ({
+          tour_feature_id: feature.id,
           tour_id: newTour.id,
         })),
       });

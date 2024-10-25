@@ -1,12 +1,14 @@
 'use client';
 
 import dayjs from 'dayjs';
-import React from 'react';
 import * as Yup from 'yup';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import axios, { AxiosResponse } from 'axios';
+import { TourFeatures } from '@prisma/client';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -18,11 +20,15 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
 import { countries } from 'src/assets/data';
-import { CreateTourMedia } from 'src/app/api/tours/dto/create-tour.dto';
+import { useLanguage } from 'src/contexts/language-context';
+import { CreateTourDto, CreateTourMedia } from 'src/app/api/tours/dto/create-tour.dto';
 
 import FormProvider from 'src/components/hook-form';
 
 import FileUpload from 'src/sections/file-upload/file-upload';
+
+import { ResponseInterface } from 'src/types/axios-respnse-type';
+import { useAuthContext } from 'src/contexts/auth-context';
 
 const EcommerceAccountPersonalSchema = Yup.object().shape({
   start_date: Yup.string().required('Start date is required'),
@@ -33,6 +39,17 @@ const EcommerceAccountPersonalSchema = Yup.object().shape({
   description_eng: Yup.string(),
   price: Yup.number().required('Price is required'),
   discount: Yup.number().nullable(),
+  selected_features: Yup.array()
+    .of(
+      Yup.object().shape({
+        id: Yup.string().required('Feature ID is required'),
+        created_date: Yup.date().required('Feature created date is required'),
+        name_ka: Yup.string().required('Feature name in Georgian is required'),
+        name_eng: Yup.string().required('Feature name in English is required'),
+      })
+    )
+    .nullable(),
+  name: Yup.string().required('Name is required'),
   // images: Yup.string().nullable(), // Changed to single URL for simplicity
 });
 
@@ -43,9 +60,11 @@ const defaultValues = {
   city: '',
   description_ka: '',
   description_eng: '',
+  name: '',
   price: 0,
   discount: null,
   images: '',
+  selected_features: [],
 };
 
 export default function EcommerceAccountPersonalView() {
@@ -54,8 +73,11 @@ export default function EcommerceAccountPersonalView() {
     defaultValues,
   });
 
+  const { user } = useAuthContext();
+
   const [files, setFiles] = React.useState<File[]>([]);
   const [uploadedImages, setUploadedImages] = React.useState<CreateTourMedia[]>([]);
+  const [features, setFeatures] = useState<TourFeatures[]>([]);
 
   const {
     reset,
@@ -64,12 +86,52 @@ export default function EcommerceAccountPersonalView() {
     control,
     getValues,
     watch,
+    setValue,
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      console.log('DATA:', data);
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      console.log('DATA TO SEND ON THE BACKEND:', data);
+
+      const {
+        city,
+        country,
+        end_date,
+        price,
+        start_date,
+        description_eng,
+        description_ka,
+        discount,
+        selected_features,
+        name,
+      } = data;
+
+      const dataToStore: CreateTourDto = {
+        country,
+        end_date: new Date(end_date),
+        start_date: new Date(start_date),
+        name,
+        price,
+        city,
+        description_eng,
+        description_ka,
+        discount,
+        tour_features: selected_features?.map((tour) => ({
+          id: tour.id,
+          created_date: new Date(tour.created_date),
+          name_eng: tour.name_eng,
+          name_ka: tour.name_ka,
+        })),
+      };
+
+      const savedTour = await axios.post('/api/tours', dataToStore, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
+
+      console.log('SAVED TOUR:', savedTour);
+      // await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
     } catch (error) {
       console.error(error);
@@ -83,6 +145,19 @@ export default function EcommerceAccountPersonalView() {
 
     setUploadedImages(filteredPhotos);
   };
+
+  const handleFetchFeatures = useCallback(async () => {
+    const tours: AxiosResponse<ResponseInterface<TourFeatures[]>> =
+      await axios.get('/api/tours/features');
+
+    setFeatures(tours.data.data);
+  }, []);
+
+  useEffect(() => {
+    handleFetchFeatures();
+  }, [handleFetchFeatures]);
+
+  const { renderLanguage } = useLanguage();
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -118,7 +193,13 @@ export default function EcommerceAccountPersonalView() {
           options={countries.map((option) => option.label)}
           getOptionLabel={(option) => option}
         /> */}
-
+        <Controller
+          name="name"
+          control={control}
+          render={({ field }) => (
+            <TextField {...field} label="Name" fullWidth variant="outlined" margin="normal" />
+          )}
+        />
         <Controller
           name="country"
           control={control}
@@ -261,6 +342,26 @@ export default function EcommerceAccountPersonalView() {
                 fullWidth
                 variant="outlined"
                 margin="normal"
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Autocomplete
+            multiple
+            id="tags-standard"
+            options={features}
+            getOptionLabel={(option) => renderLanguage(option.name_ka, option.name_eng)}
+            // defaultValue={[top100Films[13]]}
+            onChange={(_, data) => {
+              setValue('selected_features', data);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="standard"
+                label="Multiple values"
+                placeholder="Favorites"
               />
             )}
           />

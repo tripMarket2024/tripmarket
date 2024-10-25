@@ -1,16 +1,18 @@
+import { TourFeatures } from "@prisma/client";
+
 export interface CreateTourDto {
   country: string;
   city?: string | null;
   start_date: Date;
   end_date: Date;
   price: number;
-  media: CreateTourMedia[];
+  media?: CreateTourMedia[];
   tour_agent_id?: string | null;
   name: string;
   discount?: number | null;
   description_ka?: string | null;
   description_eng?: string | null;
-  tour_features?: string[];
+  tour_features?: TourFeatures[];
 }
 
 export interface CreateTourMedia {
