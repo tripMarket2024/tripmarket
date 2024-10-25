@@ -1,0 +1,98 @@
+.fileUpload {
+    width: 100%;
+    padding: 30px;
+  }
+  
+  .uploadContainer {
+    border: 1px solid #635bff;
+    padding: 20px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .uploadInput {
+    display: none;
+  }
+  
+  .uploadButton {
+    margin-top: 12px;
+    color: black;
+  }
+  
+  .uploadFooter {
+    margin-top: 12px;
+    color: red;
+  }
+  
+  .uploadItem {
+    padding: 12px;
+    border-radius: 18px;
+    box-shadow: 0px 10px 30px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .uploadItemActions {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+  
+  .uploadImage {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    background-color: gray;
+    backdrop-filter: blur(5px);
+    border-radius: 18px;
+  }
+  
+  .uploadVideo {
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+    background-color: gray;
+    border-radius: 18px;
+  }
+  
+  .uploadItems {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .textElipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 160px;
+    white-space: nowrap;
+    color: white
+  }
+  
+  @media screen and (max-width: 900px) {
+    .uploadImage {
+      width: 300px;
+      height: 250px;
+      object-fit: cover;
+    }
+  
+    .uploadVideo {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    .uploadContainer {
+      padding: 0px;
+      border: none;
+    }
+  
+    .uploadButton {
+      width: 100%;
+    }
+  }
+  
