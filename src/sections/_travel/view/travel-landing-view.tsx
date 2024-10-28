@@ -18,7 +18,7 @@ export default function TravelLandingView() {
   return (
     <>
       <Box sx={{ position: 'relative' }}>
-        <TravelLandingHero tours={_tours.slice(0, 5)} />
+        <TravelLandingHero tours={_tours.slice(0, 1)} />
 
         <Container
           sx={{

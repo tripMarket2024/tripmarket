@@ -65,6 +65,8 @@ export default function TravelLandingHero({ tours }: Props) {
     carouselThumb.onSetNav();
   }, [carouselLarge, carouselThumb]);
 
+  console.log(carouselLarge.carouselRef, 'llllllllllllllll');
+
   return (
     <Box sx={{ minHeight: { md: '100vh' }, position: 'relative' }}>
       {!!tours.length && (
@@ -79,7 +81,7 @@ export default function TravelLandingHero({ tours }: Props) {
         </Carousel>
       )}
 
-      {mdUp && (
+      {/* {mdUp && (
         <Stack
           spacing={2}
           justifyContent="center"
@@ -107,7 +109,7 @@ export default function TravelLandingHero({ tours }: Props) {
             </Carousel>
           )}
         </Stack>
-      )}
+      )} */}
     </Box>
   );
 }
@@ -160,13 +162,13 @@ function CarouselItem({ tour }: CarouselItemProps) {
           position: { md: 'absolute' },
         }}
       >
-        <Typography variant="overline" sx={{ color: 'info.main', mb: 5 }}>
+        {/* <Typography variant="overline" sx={{ color: 'info.main', mb: 5 }}>
           {renderLanguage(tour.location.label_ka, tour.location.label)}
-        </Typography>
+        </Typography> */}
 
         <Typography
           variant="h1"
-          sx={{ maxWidth: 480, fontFeatureSettings: "'case' on", textAlign: 'center' }}
+          sx={{ maxWidth: '70%', fontFeatureSettings: "'case' on", textAlign: 'center' }}
         >
           {renderLanguage(tour.slug.title_ka, tour.slug.title_eng)}
         </Typography>
@@ -209,7 +211,6 @@ function CarouselItem({ tour }: CarouselItemProps) {
         }}
       >
         {renderOverlay}
-
         <Image
           alt="hero"
           src={tour.heroUrl}
