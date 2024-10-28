@@ -113,6 +113,7 @@ export default function TravelTourItem({ tour }: Props) {
           sx={{ typography: 'body2', color: 'text.disabled' }}
         >
           <Iconify icon="carbon:time" width={16} sx={{ mr: 1 }} /> {duration}
+          
         </Stack>
 
         <Stack spacing={0.5} direction="row" alignItems="center">

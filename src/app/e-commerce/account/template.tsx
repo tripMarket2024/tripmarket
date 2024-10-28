@@ -9,5 +9,6 @@ type Props = {
 };
 
 export default function Template({ children }: Props) {
+  console.log(children, "this is from index ts of account")
   return <AccountLayout>{children}</AccountLayout>;
 }
