@@ -139,7 +139,7 @@ function CarouselItem({ tour }: CarouselItemProps) {
     />
   );
 
-  const { renderLanguage } = useLanguage()
+  const { renderLanguage } = useLanguage();
 
   return (
     <Box
@@ -164,11 +164,14 @@ function CarouselItem({ tour }: CarouselItemProps) {
           {renderLanguage(tour.location.label_ka, tour.location.label)}
         </Typography>
 
-        <Typography variant="h1" sx={{ maxWidth: 480, fontFeatureSettings: "'case' on", textAlign: 'center' }}>
+        <Typography
+          variant="h1"
+          sx={{ maxWidth: 480, fontFeatureSettings: "'case' on", textAlign: 'center' }}
+        >
           {renderLanguage(tour.slug.title_ka, tour.slug.title_eng)}
         </Typography>
 
-        <Stack
+        {/* <Stack
           alignItems="center"
           spacing={{ xs: 2.5, md: 5 }}
           direction={{ xs: 'column', md: 'row' }}
@@ -188,11 +191,11 @@ function CarouselItem({ tour }: CarouselItemProps) {
             <Iconify icon="carbon:currency" width={24} sx={{ mr: 1, color: 'primary.main' }} />
             {`Starting at ${fCurrency(tour.price)}`}
           </Stack>
-        </Stack>
-
+        </Stack> */}
+        {/* 
         <Button variant="contained" size="large" color="primary">
           Book Now
-        </Button>
+        </Button> */}
       </Stack>
 
       <Box
@@ -230,7 +233,7 @@ type ThumbnailItemProps = {
 function ThumbnailItem({ tour, selected }: ThumbnailItemProps) {
   const theme = useTheme();
 
-  const { renderLanguage } = useLanguage()
+  const { renderLanguage } = useLanguage();
 
   return (
     <Stack

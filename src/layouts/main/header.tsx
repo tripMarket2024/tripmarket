@@ -136,7 +136,6 @@ export default function Header({ headerOnDark }: Props) {
           variant="contained"
           color="inherit"
           href={user ? paths.eCommerce.account.personal : paths.loginCover}
-          target="_blank"
           rel="noopener"
           sx={{
             fontFeatureSettings: "'case' on",
