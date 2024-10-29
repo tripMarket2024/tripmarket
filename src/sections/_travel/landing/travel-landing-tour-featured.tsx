@@ -20,8 +20,7 @@ type Props = {
 };
 
 export default function TravelLandingTourFeatured({ tours }: Props) {
-
-  const {renderLanguage} = useLanguage()
+  const { renderLanguage } = useLanguage();
 
   return (
     <Container
@@ -30,10 +29,15 @@ export default function TravelLandingTourFeatured({ tours }: Props) {
       }}
     >
       <Stack spacing={3} sx={{ textAlign: 'center' }}>
-        <Typography variant="h3">{renderLanguage('თესლი ტურები', 'Featured Tours')}</Typography>
+        <Typography variant="h3">
+          {renderLanguage('უახლესი ტურისტული შეთავაზებები', 'Recent tours')}
+        </Typography>
 
         <Typography sx={{ color: 'text.secondary' }}>
-          {renderLanguage('ჩვენი დაფიჩერებული ტურები დაგეხმარებათ თქვენთვის საუკეთესო ტურის პოვნაშიიიიიი', `Our Featured Tours can help you find the trip that's perfect for you!`)}
+          {renderLanguage(
+            'გადაავლე თვალი ყველა შეთავაზებას, რომლებიც TripMarket-ზეა ხელმისაწვდომი',
+            `Our Featured Tours can help you find the trip that's perfect for you!`
+          )}
         </Typography>
       </Stack>
 
