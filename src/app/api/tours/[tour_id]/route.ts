@@ -5,11 +5,23 @@ import prisma from 'src/lib/prisma/prisma';
 
 import { middleware } from '../../middleware';
 import { EditTourDto } from '../dto/edit-tour.dto';
+import { start } from 'nprogress';
 
-export async function PUT(request: NextRequest): Promise<NextResponse> {
+const checkIfExcists = (newProperty: any, oldProperty: any) => {
+  if (newProperty) {
+    return newProperty;
+  }
+  return oldProperty;
+};
+
+export async function PATCH(
+  request: NextRequest,
+  context: { params: { tour_id: string } }
+): Promise<NextResponse> {
   try {
-    const url = new URL(request.url);
-    const id = url.searchParams.get('id');
+    const id = context.params.tour_id;
+
+    console.log(context.params.tour_id, 'this is ID');
 
     if (!id) {
       return NextResponse.json(
@@ -24,7 +36,7 @@ export async function PUT(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    const UpdateTourSchema = Yup.object().shape({
+    const EditTourSchema = Yup.object().shape({
       country: Yup.string().nullable(),
       city: Yup.string().nullable(),
       start_date: Yup.date().nullable(),
@@ -71,19 +83,71 @@ export async function PUT(request: NextRequest): Promise<NextResponse> {
     }
     console.log(response, 'JJJJJJJJJJJJJJJJJJJ');
 
-    const data = (await request.json()) as EditTourDto;
-    if (response instanceof NextResponse && !response.ok) {
+    const user = JSON.parse(request.headers.get('user') || '');
+
+    const data = (await request.json()) as unknown as EditTourDto;
+
+    await EditTourSchema.validate(data, { abortEarly: false });
+
+    const {
+      country,
+      end_date,
+      price,
+      start_date,
+      city,
+      description_eng,
+      description_ka,
+      name,
+      discount,
+    } = data;
+
+    const foundedTour = await prisma.tours.findFirst({
+      where: {
+        id,
+        travel_company_id: user.id,
+      },
+    });
+
+    if (!foundedTour) {
       return NextResponse.json(
         {
-          message: 'Unauthorized',
+          message: 'Tour Not Found',
           success: false,
-          status: 401,
+          status: 404,
         },
         {
-          status: 401,
+          status: 404,
         }
       );
     }
+
+    const editedTour = await prisma.tours.update({
+      where: {
+        id: foundedTour.id,
+      },
+      data: {
+        country: checkIfExcists(country, foundedTour.country),
+        end_date: checkIfExcists(end_date, foundedTour.end_date),
+        price: checkIfExcists(price, foundedTour.price),
+        start_date: checkIfExcists(start_date, foundedTour.start_date),
+        city: checkIfExcists(city, foundedTour.city),
+        description_eng: checkIfExcists(description_eng, foundedTour.description_eng),
+        description_ka: checkIfExcists(description_ka, foundedTour.description_ka),
+        name: checkIfExcists(name, foundedTour.name),
+        discount: checkIfExcists(discount, foundedTour.discount),
+      },
+    });
+
+    return NextResponse.json(
+      {
+        message: 'Tour updated succesfully',
+        success: true,
+        data: editedTour,
+      },
+      {
+        status: 200,
+      }
+    );
   } catch (e) {
     if (e.errors) {
       return NextResponse.json(
