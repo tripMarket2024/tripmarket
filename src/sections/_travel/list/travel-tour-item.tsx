@@ -59,8 +59,7 @@ export default function TravelTourItem({ tour }: Props) {
 
   const { renderLanguage } = useLanguage();
 
-
-  const tourPhoto = tour?.media?.length > 0 ? tour.media[0]: {url: '', type: '', image_name: ''};
+  const tourPhoto = tour?.media?.length > 0 ? tour.media[0] : { url: '', type: '', image_name: '' };
 
   return (
     <Card>

@@ -21,6 +21,7 @@ export default function TravelTourList({ tours, loading }: Props) {
         sx={{
           columnGap: 3,
           display: 'grid',
+          backgroundColor: 'red',
           rowGap: { xs: 4, md: 5 },
           gridTemplateColumns: {
             xs: 'repeat(1, 1fr)',
@@ -33,7 +34,7 @@ export default function TravelTourList({ tours, loading }: Props) {
           tour ? (
             <TravelTourItem key={tour.id} tour={tour} />
           ) : (
-            <TravelTourItemSkeleton key={index} />
+            <TravelTourItemSkeleton key={index}  />
           )
         )}
       </Box>
