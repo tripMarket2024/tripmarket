@@ -82,7 +82,6 @@ export default function Footer() {
 
                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                   The starting point for your next project based on easy-to-customize Material-UI ©
-                  helps you build apps faster and better.
                 </Typography>
               </Stack>
 
