@@ -9,19 +9,20 @@ import { RouterLink } from 'src/routes/components';
 
 import { useLanguage } from 'src/contexts/language-context';
 
-import { ITourProps } from 'src/types/tour';
+import { ToursType } from 'src/types/tours-type';
 
 import TravelTourItem from '../list/travel-tour-item';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tours: ITourProps[];
+  tours: ToursType[];
 };
 
 export default function TravelLandingTourFeatured({ tours }: Props) {
 
   const {renderLanguage} = useLanguage()
+  
 
   return (
     <Container

@@ -9,8 +9,6 @@ import { alpha, useTheme } from '@mui/material/styles';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import { fCurrency } from 'src/utils/format-number';
-
 import { bgBlur, bgGradient } from 'src/theme/css';
 import { useLanguage } from 'src/contexts/language-context';
 
@@ -20,11 +18,12 @@ import TextMaxLine from 'src/components/text-max-line';
 import Carousel, { useCarousel, CarouselDots } from 'src/components/carousel';
 
 import { ITourProps } from 'src/types/tour';
+import { ToursType } from 'src/types/tours-type';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tours: ITourProps[];
+  tours: ToursType[];
 };
 
 export default function TravelLandingHero({ tours }: Props) {
@@ -67,7 +66,7 @@ export default function TravelLandingHero({ tours }: Props) {
 
   return (
     <Box sx={{ minHeight: { md: '100vh' }, position: 'relative' }}>
-      {!!tours.length && (
+      {/* {!!tours.length && (
         <Carousel
           {...carouselLarge.carouselSettings}
           asNavFor={carouselThumb.nav}
@@ -77,9 +76,9 @@ export default function TravelLandingHero({ tours }: Props) {
             <CarouselItem key={tour.id} tour={tour} />
           ))}
         </Carousel>
-      )}
+      )} */}
 
-      {mdUp && (
+      {/* {mdUp && (
         <Stack
           spacing={2}
           justifyContent="center"
@@ -107,7 +106,7 @@ export default function TravelLandingHero({ tours }: Props) {
             </Carousel>
           )}
         </Stack>
-      )}
+      )} */}
     </Box>
   );
 }
