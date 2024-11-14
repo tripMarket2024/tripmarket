@@ -15,7 +15,7 @@ export default function EcommerceAccountWishlistView() {
         Tours
       </Typography>
 
-      <TravelTourList tours={_tours} loading={false} />
+      {/* <TravelTourList tours={_tours} loading={false} /> */}
     </>
   );
 }

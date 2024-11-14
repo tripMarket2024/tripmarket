@@ -1,7 +1,8 @@
+
 import Box from '@mui/material/Box';
 import Pagination, { paginationClasses } from '@mui/material/Pagination';
 
-import { ITourProps } from 'src/types/tour';
+import { ToursType } from 'src/types/tours-type';
 
 import TravelTourItem from './travel-tour-item';
 import TravelTourItemSkeleton from './travel-tour-item-skeleton';
@@ -9,7 +10,7 @@ import TravelTourItemSkeleton from './travel-tour-item-skeleton';
 // ----------------------------------------------------------------------
 
 type Props = {
-  tours: ITourProps[];
+  tours: ToursType[];
   loading?: boolean;
 };
 

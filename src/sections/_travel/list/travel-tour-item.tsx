@@ -20,23 +20,47 @@ import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
 
 import { ITourProps } from 'src/types/tour';
+import { Media, Tours } from '@prisma/client';
+import { title } from 'process';
+import dayjs from 'dayjs';
+import { ToursType } from 'src/types/tours-type';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tour: ITourProps;
+  tour: ToursType;
 };
 
 export default function TravelTourItem({ tour }: Props) {
-  const { slug, location, price, priceSale, favorited, duration, ratingNumber, coverUrl } = tour;
+  const {
+    city,
+    country,
+    created_date,
+    description_eng,
+    description_ka,
+    discount,
+    end_date,
+    features,
+    id,
+    name,
+    price,
+    start_date,
+    travel_company_id,
+    updated_date,
+  } = tour;
 
-  const [favorite, setFavorite] = useState(favorited);
+  const [favorite, setFavorite] = useState(false);
 
   const handleChangeFavorite = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setFavorite(event.target.checked);
   }, []);
 
+  console.log('tour', tour);
+
   const { renderLanguage } = useLanguage();
+
+
+  const tourPhoto = tour?.media?.length > 0 ? tour.media[0]: {url: '', type: '', image_name: ''};
 
   return (
     <Card>
@@ -65,7 +89,7 @@ export default function TravelTourItem({ tour }: Props) {
             color: (theme) => (theme.palette.mode === 'light' ? 'common.white' : 'grey.800'),
           }}
         >
-          {priceSale > 0 && (
+          {discount && discount > 0 && (
             <Box
               sx={{
                 color: 'grey.500',
@@ -73,7 +97,7 @@ export default function TravelTourItem({ tour }: Props) {
                 mr: 0.5,
               }}
             >
-              {fCurrency(priceSale)}
+              {fCurrency(discount)}
             </Box>
           )}
           {fCurrency(price)}
@@ -89,16 +113,16 @@ export default function TravelTourItem({ tour }: Props) {
         />
       </Stack>
 
-      <Image alt={slug.title_eng} src={coverUrl} ratio="1/1" />
+      <Image alt={tourPhoto.image_name} src={tourPhoto.url} ratio="1/1" />
 
       <Stack spacing={0.5} sx={{ p: 2.5 }}>
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {renderLanguage(location.label_ka, location.label)}
+          {renderLanguage(city || '', city || '')}
         </Typography>
 
         <Link component={RouterLink} href={paths.travel.tour} color="inherit">
           <TextMaxLine variant="h6" persistent>
-            {renderLanguage(slug.title_ka, slug.title_eng)}
+            {renderLanguage(name, name)}
           </TextMaxLine>
         </Link>
       </Stack>
@@ -112,14 +136,16 @@ export default function TravelTourItem({ tour }: Props) {
           alignItems="center"
           sx={{ typography: 'body2', color: 'text.disabled' }}
         >
-          <Iconify icon="carbon:time" width={16} sx={{ mr: 1 }} /> {duration}
+          <Iconify icon="carbon:time" width={16} sx={{ mr: 1 }} />{' '}
+          {dayjs(new Date(start_date)).format('MM/DD/YYYY')} -{' '}
+          {dayjs(new Date(end_date)).format('MM/DD/YYYY')}
         </Stack>
 
         <Stack spacing={0.5} direction="row" alignItems="center">
           <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
-          <Box sx={{ typography: 'h6' }}>
+          {/* <Box sx={{ typography: 'h6' }}>
             {Number.isInteger(ratingNumber) ? `${ratingNumber}.0` : ratingNumber}
-          </Box>
+          </Box> */}
         </Stack>
       </Stack>
     </Card>

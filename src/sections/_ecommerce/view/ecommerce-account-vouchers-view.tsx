@@ -9,6 +9,7 @@ import { TourFeatures } from '@prisma/client';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
 import React, { useState, useEffect, useCallback } from 'react';
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -20,6 +21,8 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
 import { countries } from 'src/assets/data';
+import { StorageName } from 'src/enums/storage-enum';
+import { useAuthContext } from 'src/contexts/auth-context';
 import { useLanguage } from 'src/contexts/language-context';
 import { CreateTourDto, CreateTourMedia } from 'src/app/api/tours/dto/create-tour.dto';
 
@@ -28,7 +31,7 @@ import FormProvider from 'src/components/hook-form';
 import FileUpload from 'src/sections/file-upload/file-upload';
 
 import { ResponseInterface } from 'src/types/axios-respnse-type';
-import { useAuthContext } from 'src/contexts/auth-context';
+import { storage } from 'src/firebase/firebase';
 
 const EcommerceAccountPersonalSchema = Yup.object().shape({
   start_date: Yup.string().required('Start date is required'),
@@ -89,6 +92,15 @@ export default function EcommerceAccountPersonalView() {
     setValue,
   } = methods;
 
+  const uploadFiles = async (filitas: File[]) => {
+    try {
+      const uploadedImages = await Promise.all(uploadPromises);
+      setUploadedImages((prev) => [...prev, ...uploadedImages.filter(Boolean)]);
+    } catch (error) {
+      console.error('Error uploading files:', error);
+    }
+  };
+
   const onSubmit = handleSubmit(async (data) => {
     try {
       console.log('DATA TO SEND ON THE BACKEND:', data);
@@ -124,6 +136,70 @@ export default function EcommerceAccountPersonalView() {
         })),
       };
 
+      if (files.length) {
+        const uploadPromises = files.map(
+          (file) =>
+            new Promise((resolve, reject) => {
+              const storageName = StorageName.TourImages;
+              const uuid = new Date().getTime().toString();
+
+              if (file) {
+                const imageRef = ref(storage, `${storageName}/${file.name}${uuid}`);
+                const metadata = { contentType: file.type };
+                const uploadTask = uploadBytesResumable(imageRef, file, metadata);
+
+                uploadTask.on(
+                  'state_changed',
+                  (snapshot) => {
+                    switch (snapshot.state) {
+                      case 'paused':
+                        console.log('Upload is paused');
+                        break;
+                      case 'running':
+                        console.log('Upload is running');
+                        break;
+                      default:
+                        break;
+                    }
+                  },
+                  (error) => reject(error), // Reject the promise if there’s an error
+                  async () => {
+                    try {
+                      const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                      resolve({
+                        url: downloadUrl,
+                        image_name: file.name,
+                        type: file.type,
+                      }); // Resolve the promise with the uploaded image details
+                    } catch (error) {
+                      reject(error);
+                    }
+                  }
+                );
+              } else {
+                resolve(null); // Resolve with null if no file
+              }
+            })
+        );
+
+        const resolvedImages = (await Promise.all(uploadPromises)).filter(
+          Boolean
+        ) as CreateTourMedia[];
+
+        dataToStore.media = resolvedImages as CreateTourMedia[];
+
+        console.log('DATA TO STORE:', dataToStore, uploadedImages);
+
+        await axios.post('/api/tours', dataToStore, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        });
+
+        reset();
+        return;
+      }
+
       const savedTour = await axios.post('/api/tours', dataToStore, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -137,8 +213,6 @@ export default function EcommerceAccountPersonalView() {
       console.error(error);
     }
   });
-
-  console.log('GET VALUES:', watch());
 
   const handleRemoveImage = (imageToRemove: CreateTourMedia) => {
     const filteredPhotos = uploadedImages.filter((photo) => photo.url !== imageToRemove.url);
@@ -158,6 +232,8 @@ export default function EcommerceAccountPersonalView() {
   }, [handleFetchFeatures]);
 
   const { renderLanguage } = useLanguage();
+
+  console.log('Files:', files);
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>

@@ -187,3 +187,61 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     );
   }
 }
+
+export async function GET(request: NextRequest): Promise<NextResponse> {
+  try {
+    const rowsPerPage = request.nextUrl.searchParams.get('rowsPerPage')!;
+    const page = request.nextUrl.searchParams.get('page')!;
+    const sortBy = request.nextUrl.searchParams.get('sortBy')!;
+    const direction = request.nextUrl.searchParams.get('direction')!;
+    const searchText = request.nextUrl.searchParams.get('searchText')!;
+
+    const allTours = await prisma.tours.findMany({
+      take: Number(rowsPerPage),
+      skip: (Number(page) - 1) * Number(rowsPerPage),
+      orderBy: {
+        [sortBy]: direction.toLowerCase() as 'asc' | 'desc',
+      },
+      include: {
+        media: true,
+      }
+    });
+
+    const count = await prisma.tours.count();
+
+    return NextResponse.json(
+      {
+        message: 'Tours fetched succesfully',
+        success: true,
+        data: allTours,
+        count,
+      },
+      {
+        status: 200,
+      }
+    );
+  } catch (e) {
+    if (e.errors) {
+      return NextResponse.json(
+        {
+          message: e.errors.join(', '),
+          success: false,
+          status: 400,
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+    return NextResponse.json(
+      {
+        message: 'Internal server error',
+        success: false,
+        status: 500,
+      },
+      {
+        status: 500,
+      }
+    );
+  }
+}
