@@ -5,7 +5,6 @@ import prisma from 'src/lib/prisma/prisma';
 
 import { middleware } from '../../middleware';
 import { EditTourDto } from '../dto/edit-tour.dto';
-import { start } from 'nprogress';
 
 const checkIfExcists = (newProperty: any, oldProperty: any) => {
   if (newProperty) {
@@ -81,7 +80,6 @@ export async function PATCH(
         }
       );
     }
-    console.log(response, 'JJJJJJJJJJJJJJJJJJJ');
 
     const user = JSON.parse(request.headers.get('user') || '');
 
@@ -161,6 +159,74 @@ export async function PATCH(
         }
       );
     }
+    return NextResponse.json(
+      {
+        message: 'Internal server error',
+        success: false,
+        status: 500,
+      },
+      {
+        status: 500,
+      }
+    );
+  }
+}
+
+export async function GET(
+  request: NextRequest,
+  context: { params: { tour_id: string } }
+): Promise<NextResponse> {
+  try {
+    const id = context.params.tour_id;
+
+    console.log(context.params.tour_id, 'this is ID');
+
+    if (!id) {
+      return NextResponse.json(
+        {
+          message: 'Tour ID is required',
+          success: false,
+          status: 400,
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    const foundedTour = await prisma.tours.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        media: true,
+      },
+    });
+
+    if (!foundedTour) {
+      return NextResponse.json(
+        {
+          message: 'Tour Not Found',
+          success: false,
+          status: 404,
+        },
+        {
+          status: 404,
+        }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        message: 'Tour fetched succesfully',
+        success: true,
+        data: foundedTour,
+      },
+      {
+        status: 200,
+      }
+    );
+  } catch (e) {
     return NextResponse.json(
       {
         message: 'Internal server error',

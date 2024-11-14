@@ -32,6 +32,7 @@ export default function TravelToursView() {
     } finally {
       loading.onFalse();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

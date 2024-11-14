@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import axios, { AxiosResponse } from 'axios';
+import { useState, useEffect, useCallback } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -20,6 +22,9 @@ import Iconify from 'src/components/iconify';
 import { SplashScreen } from 'src/components/loading-screen';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 
+import { ToursType } from 'src/types/tours-type';
+import { ResponseInterface } from 'src/types/axios-respnse-type';
+
 import TravelNewsletter from '../travel-newsletter';
 import ReviewTravel from '../../review/travel/review-travel';
 import TravelTourListSimilar from '../list/travel-tour-list-similar';
@@ -35,17 +40,35 @@ const _mockTour = _tours[0];
 export default function TravelTourView() {
   const loading = useBoolean(true);
 
+  const [tour, setTour] = useState<ToursType | null>(null);
+
+  const params = useParams();
+
+  const {id} = params;
+
+  console.log('router', params);
+
+  const handleFetchTourById = useCallback(async () => {
+    const data: AxiosResponse<ResponseInterface<ToursType>> = await axios.get(`/api/tours/${id}`);
+
+    setTour(data.data.data);
+  }, [id]);
+
   useEffect(() => {
-    const fakeLoading = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      loading.onFalse();
-    };
-    fakeLoading();
-  }, [loading]);
+    handleFetchTourById();
+
+    loading.onFalse();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handleFetchTourById]);
 
   if (loading.value) {
     return <SplashScreen />;
   }
+
+  console.log('tour', tour);
+
+  const tourPhotos =
+    tour?.media && tour?.media.length > 0 ? tour.media.map((item) => item.url) : ['test'];
 
   return (
     <>
@@ -59,7 +82,7 @@ export default function TravelTourView() {
           sx={{ mt: 3, mb: 5 }}
         />
 
-        <TravelTourDetailsGallery images={_mockTour.gallery} />
+        <TravelTourDetailsGallery images={tourPhotos} />
 
         <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
           <Grid xs={12} md={5} lg={4}>
@@ -67,11 +90,11 @@ export default function TravelTourView() {
           </Grid>
 
           <Grid xs={12} md={7} lg={8}>
-            <TravelTourDetailsHeader tour={_mockTour} />
+            {tour && <TravelTourDetailsHeader tour={tour} />}
 
             <Divider sx={{ borderStyle: 'dashed', my: 5 }} />
 
-            <TravelTourDetailsSummary tour={_mockTour} />
+            {tour && <TravelTourDetailsSummary tour={tour} />}
 
             <Stack direction="row" flexWrap="wrap" sx={{ mt: 5 }}>
               <Typography variant="subtitle2" sx={{ mt: 0.75, mr: 1.5 }}>

@@ -18,17 +18,17 @@ import { useLanguage } from 'src/contexts/language-context';
 import Iconify from 'src/components/iconify';
 
 import { ITourProps } from 'src/types/tour';
+import { TourType } from 'src/types/tour-type';
+import { ToursType } from 'src/types/tours-type';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tour: ITourProps;
+  tour: ToursType;
 };
 
 export default function TravelTourDetailsHeader({ tour }: Props) {
-  const { slug, ratingNumber, totalReviews, location, favorited, tourGuide } = tour;
-
-  const [favorite, setFavorite] = useState(favorited);
+  const { city, country, name } = tour;
 
   const [open, setOpen] = useState<HTMLElement | null>(null);
 
@@ -40,11 +40,7 @@ export default function TravelTourDetailsHeader({ tour }: Props) {
     setOpen(null);
   }, []);
 
-  const handleChangeFavorite = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setFavorite(event.target.checked);
-  }, []);
-
-  const {renderLanguage} = useLanguage()
+  const { renderLanguage } = useLanguage();
 
   return (
     <>
@@ -56,51 +52,24 @@ export default function TravelTourDetailsHeader({ tour }: Props) {
         }}
       >
         <Typography variant="h3" component="h1" sx={{ flexGrow: 1, pr: { md: 10 } }}>
-          {renderLanguage(slug.title_ka, slug.title_eng)}
+          {renderLanguage(name, name)}
         </Typography>
 
         <Stack direction="row" alignItems="center" flexShrink={0}>
           <IconButton onClick={handleOpen} color={open ? 'primary' : 'default'}>
             <Iconify icon="carbon:share" />
           </IconButton>
-
-          <Checkbox
-            color="error"
-            checked={favorite}
-            onChange={handleChangeFavorite}
-            icon={<Iconify icon="carbon:favorite" />}
-            checkedIcon={<Iconify icon="carbon:favorite-filled" />}
-          />
         </Stack>
       </Stack>
 
       <Stack spacing={3} direction={{ xs: 'column', md: 'row' }}>
         <Stack spacing={0.5} direction="row" alignItems="center">
           <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
-
-          <Box sx={{ typography: 'h6' }}>
-            {Number.isInteger(ratingNumber) ? `${ratingNumber}.0` : ratingNumber}
-          </Box>
-
-          <Link variant="body2" sx={{ color: 'text.secondary' }}>
-            ({fShortenNumber(totalReviews)} reviews)
-          </Link>
         </Stack>
 
         <Stack direction="row" alignItems="center" sx={{ typography: 'body2' }}>
-          <Iconify icon="carbon:location" sx={{ mr: 0.5 }} /> {renderLanguage(location.label_ka, location.label)}
-        </Stack>
-
-        <Stack direction="row" alignItems="center">
-          <Avatar src={tourGuide?.avatarUrl} sx={{ width: 24, height: 24 }} />
-
-          <Typography variant="body2" sx={{ color: 'text.secondary', mx: 0.5 }}>
-            Tour guide by
-          </Typography>
-
-          <Link variant="subtitle2" color="inherit">
-            {tourGuide?.name}
-          </Link>
+          <Iconify icon="carbon:location" sx={{ mr: 0.5 }} />{' '}
+          {renderLanguage(city || '', city || '')}
         </Stack>
       </Stack>
 

@@ -32,6 +32,9 @@ import FileUpload from 'src/sections/file-upload/file-upload';
 
 import { ResponseInterface } from 'src/types/axios-respnse-type';
 import { storage } from 'src/firebase/firebase';
+import { useRouter } from 'next/navigation';
+import { paths } from 'src/routes/paths';
+import { ToursType } from 'src/types/tours-type';
 
 const EcommerceAccountPersonalSchema = Yup.object().shape({
   start_date: Yup.string().required('Start date is required'),
@@ -92,14 +95,7 @@ export default function EcommerceAccountPersonalView() {
     setValue,
   } = methods;
 
-  const uploadFiles = async (filitas: File[]) => {
-    try {
-      const uploadedImages = await Promise.all(uploadPromises);
-      setUploadedImages((prev) => [...prev, ...uploadedImages.filter(Boolean)]);
-    } catch (error) {
-      console.error('Error uploading files:', error);
-    }
-  };
+  const router = useRouter();
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -190,25 +186,36 @@ export default function EcommerceAccountPersonalView() {
 
         console.log('DATA TO STORE:', dataToStore, uploadedImages);
 
-        await axios.post('/api/tours', dataToStore, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-        });
+        const addedTour: AxiosResponse<ResponseInterface<ToursType>> = await axios.post(
+          '/api/tours',
+          dataToStore,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            },
+          }
+        );
 
         reset();
+
+        router.push(`${paths.travel.tour}/${addedTour.data.data.id}`);
+
         return;
       }
 
-      const savedTour = await axios.post('/api/tours', dataToStore, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      });
+      const addedTour: AxiosResponse<ResponseInterface<ToursType>> = await axios.post(
+        '/api/tours',
+        dataToStore,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      );
 
-      console.log('SAVED TOUR:', savedTour);
-      // await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
+
+      router.push(`${paths.travel.tour}/${addedTour.data.data.id}`);
     } catch (error) {
       console.error(error);
     }

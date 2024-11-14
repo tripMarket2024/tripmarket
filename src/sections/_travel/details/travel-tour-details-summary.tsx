@@ -1,40 +1,32 @@
+import parser from 'html-react-parser';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
-import { fDate } from 'src/utils/format-time';
-
-import { TOUR_SERVICE_OPTIONS } from 'src/_mock';
+import { Language, useLanguage } from 'src/contexts/language-context';
 
 import Iconify, { IconifyProps } from 'src/components/iconify';
 
-import { ITourProps } from 'src/types/tour';
+import { ToursType } from 'src/types/tours-type';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tour: ITourProps;
+  tour: ToursType;
 };
 
 export default function TravelTourDetailsSummary({ tour }: Props) {
-  const {
-    program,
-    services,
-    location,
-    duration,
-    tourGuide,
-    languages,
-    highlights,
-    description,
-    available,
-  } = tour;
+  const { description_ka, description_eng } = tour;
+
+  const { language } = useLanguage();
 
   return (
     <Stack spacing={5}>
       <Stack spacing={3}>
         <Typography variant="h5">Tour Overview</Typography>
-        <Box
+        {/* <Box
           sx={{
             rowGap: 2.5,
             columnGap: 3,
@@ -59,27 +51,23 @@ export default function TravelTourDetailsSummary({ tour }: Props) {
           />
           <OverviewItem icon="carbon:time" label="Durations" text={duration} />
           <OverviewItem icon="carbon:translate" label="Languages" text={languages.join(', ')} />
-        </Box>
+        </Box> */}
       </Stack>
 
       <Divider sx={{ borderStyle: 'dashed' }} />
 
       <Stack spacing={2}>
         <Typography variant="h5">Tour Description</Typography>
-        <Typography>{description}</Typography>
+        <Typography>
+          {parser(language === Language.KA ? description_ka || '' : description_eng || '')}
+        </Typography>
       </Stack>
 
       <Stack spacing={2}>
         <Typography variant="h5">Tour Highlights</Typography>
-
-        <ul>
-          {highlights.map((highlight) => (
-            <li key={highlight}>{highlight}</li>
-          ))}
-        </ul>
       </Stack>
 
-      <Stack spacing={2}>
+      {/* <Stack spacing={2}>
         <Typography variant="h6"> Services</Typography>
 
         <Box
@@ -122,7 +110,7 @@ export default function TravelTourDetailsSummary({ tour }: Props) {
         {program.map((content) => (
           <HighlightItem key={content.label} label={content.label} text={content.text} />
         ))}
-      </Stack>
+      </Stack> */}
     </Stack>
   );
 }

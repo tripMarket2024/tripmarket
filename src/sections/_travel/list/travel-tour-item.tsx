@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -19,10 +20,6 @@ import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
 
-import { ITourProps } from 'src/types/tour';
-import { Media, Tours } from '@prisma/client';
-import { title } from 'process';
-import dayjs from 'dayjs';
 import { ToursType } from 'src/types/tours-type';
 
 // ----------------------------------------------------------------------
@@ -119,7 +116,7 @@ export default function TravelTourItem({ tour }: Props) {
           {renderLanguage(city || '', city || '')}
         </Typography>
 
-        <Link component={RouterLink} href={paths.travel.tour} color="inherit">
+        <Link component={RouterLink} href={`${paths.travel.tour}/${tour.id}`} color="inherit">
           <TextMaxLine variant="h6" persistent>
             {renderLanguage(name, name)}
           </TextMaxLine>
