@@ -60,11 +60,13 @@ export default function NextAppDirEmotionCacheProvider(props: NextAppDirEmotionC
     inserted.forEach(({ name, isGlobal }) => {
       const style = registry.cache.inserted[name];
 
+      // Ensure style is always a string
       if (typeof style !== 'boolean') {
+        const styleContent = typeof style === 'string' ? style : '';  // Fallback to empty string if undefined
         if (isGlobal) {
-          globals.push({ name, style });
+          globals.push({ name, style: styleContent });
         } else {
-          styles += style;
+          styles += styleContent;
           dataEmotionAttribute += ` ${name}`;
         }
       }
