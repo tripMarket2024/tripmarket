@@ -46,11 +46,11 @@ export default function Footer() {
 
   const pathname = usePathname();
 
-  const mobileList = navConfig.find((i) => i.title === 'Pages')?.children || [];
+  // const mobileList = navConfig.find((i) => i.title === 'Pages')?.children || [];
 
   const desktopList = pageLinks.sort((listA, listB) => Number(listA.order) - Number(listB.order));
 
-  const renderLists = mdUp ? desktopList : mobileList;
+  // const renderLists = mdUp ? desktopList : mobileList;
 
   const isHome = pathname === '/';
 
@@ -141,22 +141,6 @@ export default function Footer() {
                 <AppStoreButton />
               </Stack>
             </Stack>
-          </Grid>
-
-          <Grid xs={12} md={6}>
-            {mdUp ? (
-              <Masonry columns={4} spacing={2} defaultColumns={4} defaultSpacing={2}>
-                {renderLists.map((list) => (
-                  <ListDesktop key={list.subheader} list={list} />
-                ))}
-              </Masonry>
-            ) : (
-              <Stack spacing={1.5}>
-                {renderLists.map((list) => (
-                  <ListMobile key={list.subheader} list={list} />
-                ))}
-              </Stack>
-            )}
           </Grid>
         </Grid>
       </Container>
