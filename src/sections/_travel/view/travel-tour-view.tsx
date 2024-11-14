@@ -39,17 +39,22 @@ const _mockTour = _tours[0];
 
 export default function TravelTourView() {
   const loading = useBoolean(true);
-
+  const [tours, setTours] = useState<ToursType[]>([]);
   const [tour, setTour] = useState<ToursType | null>(null);
 
   const params = useParams();
 
-  const {id} = params;
+  const { id } = params;
 
   console.log('router', params);
 
   const handleFetchTourById = useCallback(async () => {
     const data: AxiosResponse<ResponseInterface<ToursType>> = await axios.get(`/api/tours/${id}`);
+
+    const response: AxiosResponse<ResponseInterface<ToursType[]>> = await axios.get(
+      '/api/tours?rowsPerPage=8&page=1&sortBy=created_date&direction=desc'
+    );
+    setTours(response.data.data);
 
     setTour(data.data.data);
   }, [id]);
@@ -58,14 +63,13 @@ export default function TravelTourView() {
     handleFetchTourById();
 
     loading.onFalse();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleFetchTourById]);
 
   if (loading.value) {
     return <SplashScreen />;
   }
 
-  console.log('tour', tour);
 
   const tourPhotos =
     tour?.media && tour?.media.length > 0 ? tour.media.map((item) => item.url) : ['test'];
@@ -132,7 +136,7 @@ export default function TravelTourView() {
 
       <ReviewTravel />
 
-      <TravelTourListSimilar tours={_tours.slice(-4)} />
+      <TravelTourListSimilar tours={tours.slice(-4)} />
 
       <TravelNewsletter />
     </>

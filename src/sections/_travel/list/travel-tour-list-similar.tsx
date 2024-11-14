@@ -11,14 +11,14 @@ import { useResponsive } from 'src/hooks/use-responsive';
 
 import Iconify from 'src/components/iconify';
 
-import { ITourProps } from 'src/types/tour';
+import { ToursType } from 'src/types/tours-type';
 
 import TravelTourItem from './travel-tour-item';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tours: ITourProps[];
+  tours: ToursType[];
 };
 
 export default function TravelTourListSimilar({ tours }: Props) {
