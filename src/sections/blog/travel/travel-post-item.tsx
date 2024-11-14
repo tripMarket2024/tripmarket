@@ -12,8 +12,6 @@ import TextMaxLine from 'src/components/text-max-line';
 
 import { IBlogPostProps } from 'src/types/blog';
 
-import PostTimeBlock from '../common/post-time-block';
-
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -26,7 +24,6 @@ export default function TravelPostItem({ post }: Props) {
       <Image src={post.coverUrl} alt={post.title} ratio="1/1" sx={{ borderRadius: 2 }} />
 
       <Stack spacing={1}>
-        <PostTimeBlock createdAt={fDate(post.createdAt)} duration={post.duration} />
 
         <Link component={RouterLink} href={paths.travel.post} color="inherit">
           <TextMaxLine variant="h5" persistent>

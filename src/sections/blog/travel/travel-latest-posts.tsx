@@ -14,7 +14,6 @@ import Iconify from 'src/components/iconify';
 import { IBlogPostProps } from 'src/types/blog';
 
 import PostItem from './travel-latest-post-item';
-import PostItemMobile from '../common/post-item-mobile';
 
 // ----------------------------------------------------------------------
 
@@ -74,7 +73,7 @@ export default function TravelLatestPosts({ posts }: Props) {
               mdUp ? (
                 <PostItem key={post.id} post={post} />
               ) : (
-                <PostItemMobile key={post.id} post={post} />
+                null
               )
             )}
         </Box>
