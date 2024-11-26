@@ -136,13 +136,6 @@ export default function TravelTourItem({ tour }: Props) {
           {dayjs(new Date(start_date)).format('MM/DD/YYYY')} -{' '}
           {dayjs(new Date(end_date)).format('MM/DD/YYYY')}
         </Stack>
-
-        <Stack spacing={0.5} direction="row" alignItems="center">
-          <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
-          {/* <Box sx={{ typography: 'h6' }}>
-            {Number.isInteger(ratingNumber) ? `${ratingNumber}.0` : ratingNumber}
-          </Box> */}
-        </Stack>
       </Stack>
     </Card>
   );

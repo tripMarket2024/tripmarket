@@ -200,6 +200,32 @@ export async function GET(
       },
       include: {
         media: true,
+        travel_company: {
+          select: {
+            id: true,
+            email: true,
+            name: true,
+            profile_picture: true,
+            profile_picture_url: true,
+            phone: true,
+            facebook: true,
+            instagram: true,
+            linkedin: true,
+            twitter: true,
+            website: true,
+          },
+        },
+        tour_features: {
+          include: {
+            tour_feature: {
+              select: {
+                name_ka: true,
+                name_eng: true,
+                id: true,
+              },
+            },
+          },
+        },
       },
     });
 

@@ -26,7 +26,6 @@ import { ToursType } from 'src/types/tours-type';
 import { ResponseInterface } from 'src/types/axios-respnse-type';
 
 import TravelNewsletter from '../travel-newsletter';
-import ReviewTravel from '../../review/travel/review-travel';
 import TravelTourListSimilar from '../list/travel-tour-list-similar';
 import TravelTourDetailsHeader from '../details/travel-tour-details-header';
 import TravelTourDetailsSummary from '../details/travel-tour-details-summary';
@@ -134,7 +133,8 @@ export default function TravelTourView() {
 
       <Divider sx={{ my: 10 }} />
 
-      <ReviewTravel />
+      {/* We will add this feature later */}
+      {/* <ReviewTravel /> */}
 
       <TravelTourListSimilar tours={tours.slice(-4)} />
 

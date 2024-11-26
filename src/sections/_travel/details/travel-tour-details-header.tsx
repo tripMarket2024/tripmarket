@@ -63,10 +63,6 @@ export default function TravelTourDetailsHeader({ tour }: Props) {
       </Stack>
 
       <Stack spacing={3} direction={{ xs: 'column', md: 'row' }}>
-        <Stack spacing={0.5} direction="row" alignItems="center">
-          <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
-        </Stack>
-
         <Stack direction="row" alignItems="center" sx={{ typography: 'body2' }}>
           <Iconify icon="carbon:location" sx={{ mr: 0.5 }} />{' '}
           {renderLanguage(city || '', city || '')}

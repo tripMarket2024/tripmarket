@@ -1,3 +1,9 @@
-import { Media, Tours } from "@prisma/client";
+import { Media, Tours, TourFeatures, TravelCompany, TourFeaturesTours } from '@prisma/client';
 
-export type ToursType = Tours & { media: Media[] };
+export type TourFeaturesType = TourFeaturesTours & { tour_feature: TourFeatures };
+
+export type ToursType = Tours & {
+  media: Media[];
+  travel_company: TravelCompany;
+  tour_features: TourFeaturesType[];
+};
