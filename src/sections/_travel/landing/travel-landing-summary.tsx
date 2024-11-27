@@ -10,40 +10,35 @@ import { useLanguage } from 'src/contexts/language-context';
 import Image from 'src/components/image';
 import CountUp from 'src/components/count-up';
 
-// ----------------------------------------------------------------------
-
 const SUMMARY = [
   {
     total: 130,
-    description: 'Air tickets sold',
-    descriptionGeo: 'ქრება-ჩნდება',
+    description: 'Active Tour Agencies',
+    descriptionGeo: 'აქტიური ტურისტული კომპანიები',
     icon: '/assets/icons/travel/ic_travel_tickets.svg',
   },
   {
     total: 196,
-    description: 'Tours booked',
-    descriptionGeo: 'ტყნაურობს',
+    description: 'Active Offers',
+    descriptionGeo: 'აქტიური შეთავაზებები',
     icon: '/assets/icons/travel/ic_travel_booking.svg',
   },
   {
     total: 10670,
-    description: 'Site visitors',
-    descriptionGeo: 'იბრძვის',
+    description: 'Sold Tours',
+    descriptionGeo: 'გაყიდული ტურები',
     icon: '/assets/icons/travel/ic_travel_site_visitors.svg',
   },
   {
     total: 877,
-    description: 'Verified hotels',
-    descriptionGeo: 'მეტი რა ჩემი ყლე გინდათ',
+    description: 'New Users',
+    descriptionGeo: 'ახალი მომხმარებლები',
     icon: '/assets/icons/travel/ic_travel_verified_hotels.svg',
   },
 ];
 
-// ----------------------------------------------------------------------
-
 export default function TravelLandingSummary() {
-
-  const {renderLanguage} = useLanguage()
+  const { renderLanguage } = useLanguage();
 
   return (
     <Container
@@ -60,10 +55,15 @@ export default function TravelLandingSummary() {
           mb: { xs: 8, md: 10 },
         }}
       >
-        <Typography variant="h2"> {renderLanguage('ყველაზე ჩქარი გზა ტურების დასაჯავშვნად', 'Fastest Way to Book over 450 Great Tours')}</Typography>
+        <Typography variant="h2">
+          {renderLanguage('შენი შემდეგი თავგადასავალი იწყება აქ!', 'Your next journey stars here!')}
+        </Typography>
 
         <Typography sx={{ color: 'text.secondary' }}>
-          {renderLanguage('აქ ნონსენსი ეწერა ინგლისურად, საბიკ შენ პროსტა თქვი რა გინდა', 'Since wire-frame renderings are relatively simple and fast to calculate, they are often used in cases')}
+          {renderLanguage(
+            'გამოიყენე შენი დრო საუკეთესო მომენტების შესაქმნელად!',
+            'Use your time to create the best moments!'
+          )}
         </Typography>
       </Stack>
 
@@ -94,7 +94,9 @@ export default function TravelLandingSummary() {
               />
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary' }}>{renderLanguage(value.descriptionGeo, value.description)} </Typography>
+            <Typography sx={{ color: 'text.secondary' }}>
+              {renderLanguage(value.descriptionGeo, value.description)}{' '}
+            </Typography>
           </Stack>
         ))}
       </Box>
