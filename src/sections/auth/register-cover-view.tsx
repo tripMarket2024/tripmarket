@@ -69,7 +69,6 @@ export default function RegisterCoverView() {
         name: data.name,
       });
       reset();
-      console.log('DATA', data);
     } catch (error) {
       console.error(error);
     }

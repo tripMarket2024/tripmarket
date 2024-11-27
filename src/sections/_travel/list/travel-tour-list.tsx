@@ -1,4 +1,3 @@
-
 import Box from '@mui/material/Box';
 import Pagination, { paginationClasses } from '@mui/material/Pagination';
 
@@ -12,9 +11,10 @@ import TravelTourItemSkeleton from './travel-tour-item-skeleton';
 type Props = {
   tours: ToursType[];
   loading?: boolean;
+  isAuth?: boolean;
 };
 
-export default function TravelTourList({ tours, loading }: Props) {
+export default function TravelTourList({ tours, loading, isAuth }: Props) {
   return (
     <>
       <Box
@@ -31,9 +31,9 @@ export default function TravelTourList({ tours, loading }: Props) {
       >
         {(loading ? [...Array(12)] : tours).map((tour, index) =>
           tour ? (
-            <TravelTourItem key={tour.id} tour={tour} />
+            <TravelTourItem key={tour.id} tour={tour} isAuth={isAuth} />
           ) : (
-            <TravelTourItemSkeleton key={index}  />
+            <TravelTourItemSkeleton key={index} />
           )
         )}
       </Box>

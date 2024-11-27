@@ -41,7 +41,6 @@ export default function ForgotPasswordView() {
   const onSubmit = handleSubmit(async (data) => {
     try {
       reset();
-      console.log('DATA', data);
     } catch (error) {
       console.error(error);
     }

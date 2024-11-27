@@ -13,6 +13,7 @@ export interface EditTourDto {
   description_ka?: string | null;
   description_eng?: string | null;
   tour_features?: TourFeatures[];
+  media_to_delete?: string[];
 }
 
 export interface CreateTourMedia {

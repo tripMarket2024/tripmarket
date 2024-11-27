@@ -21,14 +21,17 @@ import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
 
 import { ToursType } from 'src/types/tours-type';
+import { Button } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   tour: ToursType;
+  isAuth?: boolean;
 };
 
-export default function TravelTourItem({ tour }: Props) {
+export default function TravelTourItem({ tour, isAuth }: Props) {
   const {
     city,
     country,
@@ -52,9 +55,9 @@ export default function TravelTourItem({ tour }: Props) {
     setFavorite(event.target.checked);
   }, []);
 
-  console.log('tour', tour);
-
   const { renderLanguage } = useLanguage();
+
+  const router = useRouter();
 
   const tourPhoto = tour?.media?.length > 0 ? tour.media[0] : { url: '', type: '', image_name: '' };
 
@@ -137,6 +140,17 @@ export default function TravelTourItem({ tour }: Props) {
           {dayjs(new Date(end_date)).format('MM/DD/YYYY')}
         </Stack>
       </Stack>
+      {isAuth && (
+        <Button
+          variant="contained"
+          fullWidth
+          onClick={() => {
+            router.push(`${paths.eCommerce.account.root}/edit-tour/${tour.id}`);
+          }}
+        >
+          რედაქტირება
+        </Button>
+      )}
     </Card>
   );
 }
