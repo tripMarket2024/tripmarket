@@ -18,10 +18,7 @@ import TravelLandingHero from '../landing/travel-landing-hero';
 import TravelLandingSummary from '../landing/travel-landing-summary';
 import TravelLandingTourFeatured from '../landing/travel-landing-tour-featured';
 
-// ----------------------------------------------------------------------
-
 export default function TravelLandingView() {
-
   const [tours, setTours] = useState<ToursType[]>([]);
 
   const fetchTours = useCallback(async () => {
@@ -30,10 +27,11 @@ export default function TravelLandingView() {
         '/api/tours?rowsPerPage=8&page=1&sortBy=created_date&direction=desc'
       );
       setTours(response.data.data);
+      console.log(response.data.data, 'travel-landing-view.tsx, line 32');
     } catch (error) {
       console.error('Error fetching tours:', error);
-    } 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -43,7 +41,7 @@ export default function TravelLandingView() {
   return (
     <>
       <Box sx={{ position: 'relative' }}>
-        <TravelLandingHero tours={tours.slice(0, 5)} />
+        <TravelLandingHero />
 
         <Container
           sx={{

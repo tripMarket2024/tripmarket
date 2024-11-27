@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export const _id = [...Array(40)].map(
   (_, index) => `e99f09a7-dd88-49d5-b1c8-1daf80c2d7b${index + 1}`
 );
@@ -50,8 +48,6 @@ export const _fullAddress = [
   '4373 Emelia Valley Suite 596 - Columbia, NM / 42586',
 ];
 
-// ----------------------------------------------------------------------
-
 export const _booleans = [
   true,
   true,
@@ -79,8 +75,6 @@ export const _booleans = [
   true,
 ];
 
-// ----------------------------------------------------------------------
-
 export const _emails = [
   'nannie_abernathy70@yahoo.com',
   'ashlynn_ohara62@gmail.com',
@@ -107,8 +101,6 @@ export const _emails = [
   'genevieve.powlowski@hotmail.com',
   'louie.kuphal39@gmail.com',
 ];
-
-// ----------------------------------------------------------------------
 
 export const _fullNames = [
   'Jayvion Simon',
@@ -191,8 +183,6 @@ export const _lastNames = [
   'Parisian',
 ];
 
-// ----------------------------------------------------------------------
-
 export const _prices = [
   83.74, 97.14, 68.71, 85.21, 52.17, 25.18, 43.84, 60.98, 98.42, 53.37, 72.75, 56.61, 64.55, 77.32,
   60.62, 79.81, 93.68, 47.44, 76.24, 92.87, 72.91, 20.54, 94.25, 37.51,
@@ -226,8 +216,6 @@ export const _nativeL = [
   2405, 3127, 6843, 4672, 6995, 6053, 5192, 9686,
 ];
 
-// ----------------------------------------------------------------------
-
 export const _phoneNumbers = [
   '365-374-4961',
   '904-966-2836',
@@ -254,8 +242,6 @@ export const _phoneNumbers = [
   '353-801-5212',
   '606-285-8928',
 ];
-
-// ----------------------------------------------------------------------
 
 export const _roles = [
   'HR Manager',
@@ -284,8 +270,6 @@ export const _roles = [
   'CTO',
 ];
 
-// ----------------------------------------------------------------------
-
 export const _postTitles = [
   '10 Essential Tips for Healthy Living',
   'The Ultimate Guide to Productivity Hacks',
@@ -312,8 +296,6 @@ export const _postTitles = [
   'The Influence of Music on Mood and Emotions',
   'Travel Photography Tips: Capturing Memories Around the World',
 ];
-
-// ----------------------------------------------------------------------
 
 export const _productNames = [
   'Nike Air Force 1 NDESTRUKT',
@@ -342,133 +324,128 @@ export const _productNames = [
   'Run Star Hike Platform Sneaker',
 ];
 
-// ----------------------------------------------------------------------
-
 export const _tourNames = [
   {
-    title_ka: 'თავგადასავლების მაძიებელთა ექსპედიცია',
-    title_eng: 'Adventure Seekers Expedition',
-    id: 1
+    title_ka: 'იპოვე შენი იდეალური ტური - ყველა შეთავაზება ერთ სივრცეში!',
+    title_eng: 'Find your perfect tour - Every offer in one place!',
+    id: 1,
   },
   {
     title_ka: 'ისტორიული მემკვიდრეობის ტური',
     title_eng: 'Historic Heritage Tour',
-    id: 2
+    id: 2,
   },
   {
     title_ka: 'კულინარიული სიამოვნებების კვლევა',
     title_eng: 'Culinary Delights Exploration',
-    id: 3
+    id: 3,
   },
   {
     title_ka: 'ბუნების საოცრებების თავგადასავალი',
     title_eng: "Nature's Wonders Escapade",
-    id: 4
+    id: 4,
   },
   {
     title_ka: 'კულტურული ჩაღრმავების მოგზაურობა',
     title_eng: 'Cultural Immersion Journey',
-    id: 5
+    id: 5,
   },
   {
     title_ka: 'ველური ბუნების საფარი ექსპედიცია',
     title_eng: 'Wildlife Safari Expedition',
-    id: 6
+    id: 6,
   },
   {
     title_ka: 'ურბანული გამოკვლევის ქალაქის ტური',
     title_eng: "Urban Explorer's City Tour",
-    id: 7
+    id: 7,
   },
   {
     title_ka: 'სანაპიროს სამოთხის დასვენება',
     title_eng: 'Coastal Paradise Getaway',
-    id: 8
+    id: 8,
   },
   {
     title_ka: 'ღვინის დაგემოვნების გამოცდილება',
     title_eng: 'Wine Tasting Experience',
-    id: 9
+    id: 9,
   },
   {
     title_ka: 'სულიერი რიტრიტის ტური',
     title_eng: 'Spiritual Retreat Tour',
-    id: 10
+    id: 10,
   },
   {
     title_ka: 'გარე თავგადასავლების ლაშქრობა',
     title_eng: 'Outdoor Adventure Trek',
-    id: 11
+    id: 11,
   },
   {
     title_ka: 'ფოტოგრაფიული ექსპედიცია',
     title_eng: 'Photography Expedition',
-    id: 12
+    id: 12,
   },
   {
     title_ka: 'მუსიკისა და ხელოვნების აღმოჩენის ტური',
     title_eng: 'Music and Arts Discovery Tour',
-    id: 13
+    id: 13,
   },
   {
     title_ka: 'ჯანსაღი ცხოვრების და იოგას რიტრიტი',
     title_eng: 'Wellness and Yoga Retreat',
-    id: 14
+    id: 14,
   },
   {
     title_ka: 'დამალული მარგალიტების აღმოჩენის ტური',
     title_eng: 'Hidden Gems Discovery Tour',
-    id: 15
+    id: 15,
   },
   {
     title_ka: 'ვულკანების და გეოთერმული კვლევა',
     title_eng: 'Volcano and Geothermal Exploration',
-    id: 16
+    id: 16,
   },
   {
     title_ka: 'გურმანების გასტრონომიული ტური',
     title_eng: "Foodie's Gastronomic Tour",
-    id: 17
+    id: 17,
   },
   {
     title_ka: 'ლაშქრობის და ბანაკების თავგადასავალი',
     title_eng: 'Hiking and Camping Adventure',
-    id: 18
+    id: 18,
   },
   {
     title_ka: 'არქიტექტურისა და დიზაინის ტური',
     title_eng: 'Architecture and Design Tour',
-    id: 19
+    id: 19,
   },
   {
     title_ka: 'სანაპიროს კრუიზი და კუნძულების ტური',
     title_eng: 'Coastal Cruise and Island Hopping',
-    id: 20
+    id: 20,
   },
   {
     title_ka: 'მშვენიერი მატარებლის მოგზაურობის გამოცდილება',
     title_eng: 'Scenic Train Ride Experience',
-    id: 21
+    id: 21,
   },
   {
     title_ka: 'ისტორიული ძეგლების ექსპედიცია',
     title_eng: 'Historical Landmarks Expedition',
-    id: 22
+    id: 22,
   },
   {
     title_ka: 'სერფინგისა და სანაპირო თავგადასავალი',
     title_eng: 'Surfing and Beach Adventure',
-    id: 23
+    id: 23,
   },
   {
     title_ka: 'ღამის ცხოვრება და გართობის ტური',
     title_eng: 'Nightlife and Entertainment Tour',
-    id: 24
+    id: 24,
   },
 ];
-
-
-// ----------------------------------------------------------------------
 
 export const _jobTitles = [
   'Software Engineer',
@@ -497,8 +474,6 @@ export const _jobTitles = [
   'Event Planner',
 ];
 
-// ----------------------------------------------------------------------
-
 export const _companyNames = [
   'Lueilwitz and Sons',
   'Gleichner, Mueller and Tromp',
@@ -525,8 +500,6 @@ export const _companyNames = [
   'Schimmel - Raynor',
   'Tremblay LLC',
 ];
-
-// ----------------------------------------------------------------------
 
 export const _tags = [
   'Technology',
@@ -555,8 +528,6 @@ export const _tags = [
   'Writing',
 ];
 
-// ----------------------------------------------------------------------
-
 export const _taskNames = [
   'Complete Project Proposal',
   'Conduct Market Research',
@@ -584,8 +555,6 @@ export const _taskNames = [
   'Coordinate Project Meetings',
 ];
 
-// ----------------------------------------------------------------------
-
 export const _sentences = [
   'The sun slowly set over the horizon, painting the sky in vibrant hues of orange and pink.',
   'She eagerly opened the gift, her eyes sparkling with excitement.',
@@ -612,8 +581,6 @@ export const _sentences = [
   'The artist dipped the brush into vibrant paint, bringing the canvas to life with bold strokes and vivid colors.',
   'The laughter of children echoed through the playground, filling the atmosphere with pure joy.',
 ];
-
-// ----------------------------------------------------------------------
 
 export const _descriptions = [
   `Occaecati est et illo quibusdam accusamus qui. Incidunt aut et molestiae ut facere aut. Est quidem iusto praesentium excepturi harum nihil tenetur facilis. Ut omnis voluptates nihil accusantium doloribus eaque debitis.`,
