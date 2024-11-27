@@ -53,7 +53,6 @@ export default function EcommerceAccountPersonalView() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      console.log('DATA', data);
     } catch (error) {
       console.error(error);
     }
@@ -78,7 +77,6 @@ export default function EcommerceAccountPersonalView() {
         <RHFTextField name="phone" label="Phone Number" />
 
         <RHFTextField name="address" label="Street Address" />
-
       </Box>
       <Stack spacing={3} sx={{ my: 5 }}>
         <Typography variant="h5"> Change Password </Typography>

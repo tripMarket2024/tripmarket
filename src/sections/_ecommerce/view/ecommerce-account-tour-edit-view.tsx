@@ -5,11 +5,12 @@ import * as Yup from 'yup';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios, { AxiosResponse } from 'axios';
-import { TourFeatures } from '@prisma/client';
+import { Media, TourFeatures } from '@prisma/client';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, Controller } from 'react-hook-form';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useState, useEffect, useCallback } from 'react';
-import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { ref, deleteObject, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -20,21 +21,27 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 
+import { paths } from 'src/routes/paths';
+
+import { useBoolean } from 'src/hooks/use-boolean';
+
 import { countries } from 'src/assets/data';
+import { storage } from 'src/firebase/firebase';
 import { StorageName } from 'src/enums/storage-enum';
 import { useAuthContext } from 'src/contexts/auth-context';
 import { useLanguage } from 'src/contexts/language-context';
-import { CreateTourDto, CreateTourMedia } from 'src/app/api/tours/dto/create-tour.dto';
+import { EditTourDto } from 'src/app/api/tours/dto/edit-tour.dto';
+import {
+  CreateTourMedia,
+} from 'src/app/api/tours/dto/create-tour.dto';
 
 import FormProvider from 'src/components/hook-form';
+import { SplashScreen } from 'src/components/loading-screen';
 
 import FileUpload from 'src/sections/file-upload/file-upload';
 
-import { ResponseInterface } from 'src/types/axios-respnse-type';
-import { storage } from 'src/firebase/firebase';
-import { useRouter } from 'next/navigation';
-import { paths } from 'src/routes/paths';
 import { ToursType } from 'src/types/tours-type';
+import { ResponseInterface } from 'src/types/axios-respnse-type';
 
 const EcommerceAccountPersonalSchema = Yup.object().shape({
   start_date: Yup.string().required('Start date is required'),
@@ -59,47 +66,101 @@ const EcommerceAccountPersonalSchema = Yup.object().shape({
   // images: Yup.string().nullable(), // Changed to single URL for simplicity
 });
 
-const defaultValues = {
-  start_date: dayjs(new Date()).toISOString(),
-  end_date: dayjs(new Date()).toISOString(),
-  country: '',
-  city: '',
-  description_ka: '',
-  description_eng: '',
-  name: '',
-  price: 0,
-  discount: null,
-  images: '',
-  selected_features: [],
-};
-
-export default function EcommerceAccountPersonalView() {
-  const methods = useForm({
-    resolver: yupResolver(EcommerceAccountPersonalSchema),
-    defaultValues,
-  });
-
+export default function EditTourView() {
   const { user } = useAuthContext();
 
   const [files, setFiles] = React.useState<File[]>([]);
   const [uploadedImages, setUploadedImages] = React.useState<CreateTourMedia[]>([]);
   const [features, setFeatures] = useState<TourFeatures[]>([]);
+  const loading = useBoolean(true);
+  const [selectedTour, setTour] = useState<ToursType | null>(null);
+  const [exsistingImages, setExsistingImages] = useState<Media[]>([]);
+
+  const pageParams = useParams();
+
+  const { id } = pageParams;
+
+  const defaultValues = {
+    start_date: dayjs(selectedTour?.start_date).toISOString(),
+    end_date: dayjs(selectedTour?.end_date).toISOString(),
+    country: selectedTour?.country || '',
+    city: selectedTour?.city || '',
+    description_ka: selectedTour?.description_ka || '',
+    description_eng: selectedTour?.description_eng || '',
+    name: selectedTour?.name || '',
+    price: selectedTour?.price || 0,
+    discount: selectedTour?.discount || null,
+    images: '',
+    selected_features: [],
+  };
+
+  const methods = useForm({
+    resolver: yupResolver(EcommerceAccountPersonalSchema),
+    defaultValues,
+  });
+
+  const router = useRouter();
 
   const {
     reset,
     handleSubmit,
     formState: { isSubmitting },
     control,
-    getValues,
     watch,
     setValue,
   } = methods;
 
-  const router = useRouter();
+  const handleFetchTourById = useCallback(async () => {
+    const data: AxiosResponse<ResponseInterface<ToursType>> = await axios.get(
+      `/api/tours/user-tours/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      }
+    );
+
+    if (!data.data.success) {
+      router.push('/');
+    }
+
+    setValue('start_date', dayjs(data.data.data.start_date).toISOString());
+    setValue('end_date', dayjs(data.data.data.end_date).toISOString());
+    setValue('country', data.data.data.country);
+    setValue('city', data.data.data.city || '');
+    setValue('description_ka', data.data.data.description_ka || '');
+    setValue('description_eng', data.data.data.description_eng || '');
+    setValue('name', data.data.data.name);
+    setValue('price', data.data.data.price);
+    setValue(
+      'selected_features',
+      data.data.data.tour_features.map((item) => ({
+        id: item.tour_feature.id,
+        created_date: new Date(),
+        name_eng: item.tour_feature.name_eng,
+        name_ka: item.tour_feature.name_ka,
+      }))
+    );
+    setExsistingImages(data.data.data.media || []);
+    setTour(data.data.data);
+  }, [id, setValue, router]);
+
+  useEffect(() => {
+    handleFetchTourById();
+
+    loading.onFalse();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handleFetchTourById]);
+
+  const handleRemoveImageFromStorage = async (imageName: string): Promise<void> => {
+    const photoRef = ref(storage, `${StorageName.TourImages}/${imageName}`);
+
+    await deleteObject(photoRef);
+  };
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-
+      loading.setValue(true);
       const {
         city,
         country,
@@ -113,7 +174,7 @@ export default function EcommerceAccountPersonalView() {
         name,
       } = data;
 
-      const dataToStore: CreateTourDto = {
+      const dataToStore: EditTourDto = {
         country,
         end_date: new Date(end_date),
         start_date: new Date(start_date),
@@ -130,6 +191,19 @@ export default function EcommerceAccountPersonalView() {
           name_ka: tour.name_ka,
         })),
       };
+
+      const imagesToRemove = [] as string[];
+
+      selectedTour?.media.map((item) => {
+        const foundMedia = exsistingImages.find((exsistMedia) => item.id === exsistMedia.id);
+        if (!foundMedia) {
+          imagesToRemove.push(item.id);
+          return item;
+        }
+        return item;
+      });
+
+      dataToStore.media_to_delete = imagesToRemove;
 
       if (files.length) {
         const uploadPromises = files.map(
@@ -157,7 +231,7 @@ export default function EcommerceAccountPersonalView() {
                         break;
                     }
                   },
-                  (error) => reject(error), // Reject the promise if there’s an error
+                  (error) => reject(error),
                   async () => {
                     try {
                       const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
@@ -165,14 +239,14 @@ export default function EcommerceAccountPersonalView() {
                         url: downloadUrl,
                         image_name: file.name,
                         type: file.type,
-                      }); // Resolve the promise with the uploaded image details
+                      });
                     } catch (error) {
                       reject(error);
                     }
                   }
                 );
               } else {
-                resolve(null); // Resolve with null if no file
+                resolve(null);
               }
             })
         );
@@ -181,48 +255,39 @@ export default function EcommerceAccountPersonalView() {
           Boolean
         ) as CreateTourMedia[];
 
-        dataToStore.media = resolvedImages as CreateTourMedia[];
+        dataToStore.media = resolvedImages;
 
-        const addedTour: AxiosResponse<ResponseInterface<ToursType>> = await axios.post(
-          '/api/tours',
-          dataToStore,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            },
-          }
-        );
-
-        reset();
-
-        router.push(`${paths.travel.tour}/${addedTour.data.data.id}`);
-
-        return;
-      }
-
-      const addedTour: AxiosResponse<ResponseInterface<ToursType>> = await axios.post(
-        '/api/tours',
-        dataToStore,
-        {
+        await axios.patch(`/api/tours/${selectedTour?.id}`, dataToStore, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
+        });
+
+        router.push(`${paths.travel.tour}/${selectedTour?.id}`);
+        loading.setValue(false);
+        return;
+      }
+
+      await axios.patch(`/api/tours/${selectedTour?.id}`, dataToStore, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      });
+
+      selectedTour?.media.forEach(async (item) => {
+        const foundMedia = exsistingImages.find((exsistMedia) => item.id === exsistMedia.id);
+        if (!foundMedia) {
+          await handleRemoveImageFromStorage(item.image_name);
         }
-      );
+      });
 
-      reset();
+      loading.setValue(false);
 
-      router.push(`${paths.travel.tour}/${addedTour.data.data.id}`);
+      router.push(`${paths.travel.tour}/${selectedTour?.id}`);
     } catch (error) {
       console.error(error);
     }
   });
-
-  const handleRemoveImage = (imageToRemove: CreateTourMedia) => {
-    const filteredPhotos = uploadedImages.filter((photo) => photo.url !== imageToRemove.url);
-
-    setUploadedImages(filteredPhotos);
-  };
 
   const handleFetchFeatures = useCallback(async () => {
     const tours: AxiosResponse<ResponseInterface<TourFeatures[]>> =
@@ -236,14 +301,24 @@ export default function EcommerceAccountPersonalView() {
   }, [handleFetchFeatures]);
 
   const { renderLanguage } = useLanguage();
+
+  if (loading.value || !selectedTour) {
+    return <SplashScreen />;
+  }
+
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       <Typography variant="h5" sx={{ mb: 3 }}>
-        Add Tour
+        Edit {selectedTour.name}
       </Typography>
 
       <Box sx={{ mb: 3 }}>
-        <FileUpload files={files} setFiles={setFiles} />
+        <FileUpload
+          files={files}
+          setFiles={setFiles}
+          exsistingFiles={exsistingImages}
+          setExsistingFiles={setExsistingImages}
+        />
       </Box>
 
       <Box sx={{ mb: 3 }}>
@@ -406,7 +481,12 @@ export default function EcommerceAccountPersonalView() {
             id="tags-standard"
             options={features}
             getOptionLabel={(option) => renderLanguage(option.name_ka, option.name_eng)}
-            // defaultValue={[top100Films[13]]}
+            defaultValue={selectedTour?.tour_features.map((item) => ({
+              id: item.tour_feature.id,
+              created_date: new Date(),
+              name_eng: item.tour_feature.name_eng,
+              name_ka: item.tour_feature.name_ka,
+            }))}
             onChange={(_, data) => {
               setValue('selected_features', data);
             }}

@@ -55,7 +55,6 @@ export default function ReviewNewForm({ onClose, ...other }: Props) {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
       onClose();
-      console.log('DATA', data);
     } catch (error) {
       console.error(error);
     }

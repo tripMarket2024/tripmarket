@@ -20,8 +20,6 @@ export async function PATCH(
   try {
     const id = context.params.tour_id;
 
-    console.log(context.params.tour_id, 'this is ID');
-
     if (!id) {
       return NextResponse.json(
         {
@@ -97,12 +95,18 @@ export async function PATCH(
       description_ka,
       name,
       discount,
+      tour_features,
+      media,
+      media_to_delete,
     } = data;
 
     const foundedTour = await prisma.tours.findFirst({
       where: {
         id,
         travel_company_id: user.id,
+      },
+      include: {
+        tour_features: true,
       },
     });
 
@@ -117,6 +121,44 @@ export async function PATCH(
           status: 404,
         }
       );
+    }
+
+    if (tour_features && tour_features.length > 0) {
+      if (data.tour_features) {
+        await prisma.tourFeaturesTours.deleteMany({
+          where: {
+            tour_id: id,
+          },
+        });
+
+        await prisma.tourFeaturesTours.createMany({
+          data: data.tour_features.map((feature) => ({
+            tour_feature_id: feature.id,
+            tour_id: foundedTour.id,
+          })),
+        });
+      }
+    }
+
+    if (media_to_delete && media_to_delete.length > 0) {
+      await prisma.media.deleteMany({
+        where: {
+          id: {
+            in: media_to_delete,
+          },
+        },
+      });
+    }
+
+    if (media && media) {
+      await prisma.media.createMany({
+        data: media.map((m) => ({
+          url: m.url,
+          type: m.type,
+          image_name: m.image_name,
+          tour_id: foundedTour.id,
+        })),
+      });
     }
 
     const editedTour = await prisma.tours.update({
@@ -178,8 +220,6 @@ export async function GET(
 ): Promise<NextResponse> {
   try {
     const id = context.params.tour_id;
-
-    console.log(context.params.tour_id, 'this is ID');
 
     if (!id) {
       return NextResponse.json(

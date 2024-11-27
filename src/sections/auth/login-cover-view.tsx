@@ -59,7 +59,6 @@ export default function LoginCoverView() {
         password: data.password,
       });
       reset();
-      console.log('DATA', data);
     } catch (error) {
       console.error(error);
     }

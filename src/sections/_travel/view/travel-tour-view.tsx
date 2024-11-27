@@ -45,8 +45,6 @@ export default function TravelTourView() {
 
   const { id } = params;
 
-  console.log('router', params);
-
   const handleFetchTourById = useCallback(async () => {
     const data: AxiosResponse<ResponseInterface<ToursType>> = await axios.get(`/api/tours/${id}`);
 
