@@ -4,8 +4,6 @@ import { countries } from 'src/assets/data';
 
 import CountrySelect from 'src/components/country-select';
 
-// ----------------------------------------------------------------------
-
 export default function FilterLocation() {
   return (
     <CountrySelect

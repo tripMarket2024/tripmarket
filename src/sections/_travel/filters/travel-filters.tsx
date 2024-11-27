@@ -10,8 +10,6 @@ import FilterTime from './filter-time';
 import FilterGuests from './filter-guests';
 import FilterLocation from './filter-location';
 
-// ----------------------------------------------------------------------
-
 export default function TravelFilters({ sx, ...other }: StackProps) {
   const [departureDay, setDepartureDay] = useState<Date | null>(null);
 

@@ -52,6 +52,7 @@ export default function TravelLandingView() {
             mx: { md: 'auto' },
             pt: { xs: 3, md: 0 },
             position: { md: 'absolute' },
+            zIndex: 10,
           }}
         >
           <TravelFilters
@@ -61,6 +62,10 @@ export default function TravelLandingView() {
                 xs: 'background.neutral',
                 md: alpha(theme.palette.common.white, 0.08),
               }),
+              boxShadow: 1,
+              borderRadius: 2,
+              px: 2,
+              py: 1,
             }}
           />
         </Container>
