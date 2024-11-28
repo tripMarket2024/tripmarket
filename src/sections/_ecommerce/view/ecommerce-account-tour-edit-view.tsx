@@ -237,7 +237,7 @@ export default function EditTourView() {
                       const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
                       resolve({
                         url: downloadUrl,
-                        image_name: file.name,
+                        image_name: `${file.name}${uuid}`,
                         type: file.type,
                       });
                     } catch (error) {

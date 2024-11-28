@@ -18,7 +18,6 @@ type Props = {
 };
 
 export default function AccountLayout({ children }: Props) {
-  console.log(children, "HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH")
   const mdUp = useResponsive('up', 'md');
 
   const menuOpen = useBoolean();

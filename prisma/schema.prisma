@@ -19,10 +19,10 @@ model TravelCompany {
   name                String
   description_ka      String?
   description_eng     String?
+  google_uid          String
   address             String?
   phone               String?     @unique
-  password            String
-  email               String?     @unique
+  email               String      @unique
   website             String?
   facebook            String?
   telegram            String?

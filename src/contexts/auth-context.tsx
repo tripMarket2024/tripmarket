@@ -1,15 +1,20 @@
-'use client'
-
+'use client';
 
 import { useRouter } from 'next/navigation';
 import axios, { AxiosResponse } from 'axios';
 import { useMemo, useState, useEffect, useContext, useCallback, createContext } from 'react';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 
-import { LogInCredentialsDto } from 'src/app/api/auth/log-in/dto/log-in.dto';
+import { app } from 'src/firebase/firebase';
+import { CreateCompanyDto } from 'src/app/api/auth/register/dto/create-company.dto';
 
 import { ResponseInterface } from 'src/types/axios-respnse-type';
 import { AuthResponse, TravelCompanyInterface } from 'src/types/login-response-type';
-import { RegisterCompanyDto } from 'src/app/api/auth/register/dto/register-company.dto';
+
+export interface LogInCredentialsDto {
+  email: string;
+  password: string;
+}
 
 // Create a context
 const defaultAuthContext = {
@@ -17,7 +22,8 @@ const defaultAuthContext = {
   user: null as TravelCompanyInterface | null,
   login: async (credentials: LogInCredentialsDto) => {},
   logout: async () => {},
-  register: async (credentials: RegisterCompanyDto) => {},
+  register: async (credentials: CreateCompanyDto) => {},
+  setUserState: (authenticatedUser: TravelCompanyInterface | null) => {},
 };
 
 // Create a context with a default value
@@ -29,64 +35,41 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<TravelCompanyInterface | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response: AxiosResponse<ResponseInterface<TravelCompanyInterface>> = await axios.get(
-          '/api/auth/me',
-          {
-            headers: {
-              authorization: `Bearer ${window.localStorage.getItem('accessToken')}`,
-            },
-          }
-        );
-        if (response.data.success) {
-          setIsAuthenticated(true);
-          setUser(response.data.data);
-        } else {
-          setIsAuthenticated(false);
-          setUser(null);
-        }
-      } catch (error) {
-        console.error('Failed to check authentication status:', error);
-      }
-    };
-
-    checkAuth();
+  const setUserState = useCallback((authenticatedUser: TravelCompanyInterface | null) => {
+    setUser(authenticatedUser);
   }, []);
 
   const login = useCallback(
     async (credentials: LogInCredentialsDto) => {
-      // Example login function (replace with actual login logic)
-      const response: AxiosResponse<ResponseInterface<AuthResponse>> = await axios.post(
-        '/api/auth/log-in',
-        credentials
-      );
+      const { email, password } = credentials;
 
-      if (response.data.success) {
-        setIsAuthenticated(true);
-        setUser(response.data.data.user);
-        window.localStorage.setItem('accessToken', response.data.data.token);
-        router.push('/e-commerce/account/personal/'); 
-      }
+      const credential = await signInWithEmailAndPassword(getAuth(app), email, password);
+      const idToken = await credential.user.getIdToken();
+      setIsAuthenticated(true);
+      window.localStorage.setItem('accessToken', idToken);
+      router.push('/e-commerce/account/personal/');
     },
     [router]
   );
 
   const register = useCallback(
-    async (credentials: RegisterCompanyDto) => {
-      // Example login function (replace with actual login logic)
+    async (credentials: CreateCompanyDto) => {
+      const { email, name, password } = credentials;
+      const userAuth = await createUserWithEmailAndPassword(getAuth(app), email, password);
+
+      const idToken = await userAuth.user.getIdToken();
       const response: AxiosResponse<ResponseInterface<AuthResponse>> = await axios.post(
         '/api/auth/register',
-        credentials
+        {
+          email,
+          google_uid: userAuth.user.uid,
+          name,
+        }
       );
-
-      if (response.data.success) {
-        setIsAuthenticated(true);
-        setUser(response.data.data.user);
-        window.localStorage.setItem('accessToken', response.data.data.token);
-        router.push('/e-commerce/account/personal/'); 
-      }
+      setUser(response.data.data.user);
+      setIsAuthenticated(true);
+      window.localStorage.setItem('accessToken', idToken);
+      router.push('/e-commerce/account/personal/');
     },
     [router]
   );
@@ -95,7 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsAuthenticated(false);
     setUser(null);
     window.localStorage.removeItem('accessToken');
-    router.push('auth/login-cover'); 
+    router.push('auth/login-cover');
   }, [router]);
 
   const value = useMemo(
@@ -105,8 +88,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       login,
       register,
       logout,
+      setUserState
     }),
-    [isAuthenticated, user, login, logout, register]
+    [isAuthenticated, user, login, logout, register, setUserState]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
