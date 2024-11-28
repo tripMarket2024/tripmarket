@@ -29,9 +29,7 @@ export default function RegisterCoverView() {
   const passwordShow = useBoolean();
 
   const RegisterSchema = Yup.object().shape({
-    name: Yup.string()
-      .required('Full name is required')
-      .min(6, 'Mininum 6 characters'),
+    name: Yup.string().required('Full name is required').min(6, 'Mininum 6 characters'),
     email: Yup.string().required('Email is required').email('That is not an email'),
     password: Yup.string()
       .required('Password is required')
@@ -59,6 +57,7 @@ export default function RegisterCoverView() {
     reset,
     handleSubmit,
     formState: { isSubmitting },
+    setError,
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
@@ -70,7 +69,9 @@ export default function RegisterCoverView() {
       });
       reset();
     } catch (error) {
-      console.error(error);
+      setError('email', {
+        message: 'Email already exists',
+      });
     }
   });
 

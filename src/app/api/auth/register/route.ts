@@ -1,6 +1,4 @@
 import * as Yup from 'yup';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 
 import prisma from 'src/lib/prisma/prisma';
@@ -12,16 +10,16 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const schema = Yup.object().shape({
       name: Yup.string().required(),
       email: Yup.string().email().required(),
-      password: Yup.string().required(),
+      google_uid: Yup.string().required(),
     });
 
     const data = (await request.json()) as unknown as RegisterCompanyDto;
 
     await schema.validate(data, { abortEarly: false });
 
-    const { name, email, password } = data;
+    const { name, email, google_uid } = data;
 
-    const existingUser = await prisma.travelCompany.findUnique({
+    const existingUser = await prisma.travelCompany.findFirst({
       where: { email },
     });
 
@@ -38,21 +36,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
     const newCompany = await prisma.travelCompany.create({
       data: {
         name,
         email,
-        password: hashedPassword,
+        google_uid,
       },
     });
-
-    const token = jwt.sign(
-      { id: newCompany.id, email: newCompany.email },
-      process.env.NEXT_PUBLIC_JWT_SECRET || '',
-      { expiresIn: '1h' } // Token expires in 1 hour
-    );
 
     return NextResponse.json(
       {
@@ -60,7 +50,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
         success: true,
         data: {
           user: newCompany,
-          token
         },
         status: 200,
       },

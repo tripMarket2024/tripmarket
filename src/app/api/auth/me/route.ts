@@ -34,8 +34,27 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const foundedUser = await prisma.travelCompany.findUnique({
+  const foundedUser = await prisma.travelCompany.findFirst({
     where: { id: user.id },
+    select: {
+      address: true,
+      email: true,
+      facebook: true,
+      id: true,
+      instagram: true,
+      linkedin: true,
+      name: true,
+      phone: true,
+      profile_picture: true,
+      profile_picture_url: true,
+      twitter: true,
+      description_eng: true,
+      description_ka: true,
+      created_date: true,
+      telegram: true,
+      website: true,
+      youtube: true,
+    },
   });
 
   return NextResponse.json(

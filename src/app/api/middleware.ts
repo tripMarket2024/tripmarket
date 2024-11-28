@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
+import { adminAuth } from 'src/lib/firebaseConfig';
+import prisma from 'src/lib/prisma/prisma';
 
 const JWT_SECRET = process.env.NEXT_PUBLIC_JWT_SECRET || 'your-secret-key';
-
 
 export async function middleware(req: NextRequest) {
   const token = req.headers.get('authorization')?.split(' ')[1];
@@ -12,9 +13,19 @@ export async function middleware(req: NextRequest) {
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decodedToken = await adminAuth.verifyIdToken(token);
 
-    req.headers.set('user', JSON.stringify(decoded));
+    const user = await prisma.travelCompany.findFirst({
+      where: {
+        email: decodedToken.email,
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    req.headers.set('user', JSON.stringify(user));
 
     return NextResponse.next();
   } catch (error) {
