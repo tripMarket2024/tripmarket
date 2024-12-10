@@ -3,6 +3,8 @@
 import { useParams } from 'next/navigation';
 import axios, { AxiosResponse } from 'axios';
 import { useState, useEffect, useCallback } from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { TwitterShareButton, FacebookShareButton, LinkedinShareButton } from 'react-share';
 
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -16,7 +18,7 @@ import { paths } from 'src/routes/paths';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { _tours, _socials } from 'src/_mock';
+import { _tours } from 'src/_mock';
 
 import Iconify from 'src/components/iconify';
 import { SplashScreen } from 'src/components/loading-screen';
@@ -32,6 +34,7 @@ import TravelTourDetailsSummary from '../details/travel-tour-details-summary';
 import TravelTourDetailsGallery from '../details/travel-tour-details-gallery';
 import TravelTourDetailsReserveForm from '../details/travel-tour-details-reserve-form';
 
+
 // ----------------------------------------------------------------------
 
 const _mockTour = _tours[0];
@@ -44,6 +47,10 @@ export default function TravelTourView() {
   const params = useParams();
 
   const { id } = params;
+
+  const shareUrl =
+    `https://tripmarket-staging.vercel.app/travel/tour/${id}/`;
+  const shareTitle = tour?.name || 'Check out this tour!';
 
   const handleFetchTourById = useCallback(async () => {
     const data: AxiosResponse<ResponseInterface<ToursType>> = await axios.get(`/api/tours/${id}`);
@@ -103,26 +110,65 @@ export default function TravelTourView() {
               </Typography>
 
               <Stack direction="row" alignItems="center" flexWrap="wrap">
-                {_socials.map((social) => (
+                <FacebookShareButton url={shareUrl}  title={shareTitle}>
                   <Button
-                    key={social.value}
                     size="small"
                     variant="outlined"
-                    startIcon={<Iconify icon={social.icon} />}
+                    startIcon={<Iconify icon="eva:facebook-fill" />}
                     sx={{
                       m: 0.5,
                       flexShrink: 0,
-                      color: social.color,
-                      borderColor: social.color,
+                      color: '#3b5998',
+                      borderColor: '#3b5998',
                       '&:hover': {
-                        borderColor: social.color,
-                        bgcolor: alpha(social.color, 0.08),
+                        borderColor: '#3b5998',
+                        bgcolor: alpha('#3b5998', 0.08),
                       },
                     }}
                   >
-                    {social.label}
+                    Facebook
                   </Button>
-                ))}
+                </FacebookShareButton>
+
+                <TwitterShareButton url={shareUrl} title={shareTitle}>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    startIcon={<Iconify icon="eva:twitter-fill" />}
+                    sx={{
+                      m: 0.5,
+                      flexShrink: 0,
+                      color: '#1DA1F2',
+                      borderColor: '#1DA1F2',
+                      '&:hover': {
+                        borderColor: '#1DA1F2',
+                        bgcolor: alpha('#1DA1F2', 0.08),
+                      },
+                    }}
+                  >
+                    Twitter
+                  </Button>
+                </TwitterShareButton>
+
+                <LinkedinShareButton url={shareUrl} title={shareTitle}>
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    startIcon={<Iconify icon="eva:linkedin-fill" />}
+                    sx={{
+                      m: 0.5,
+                      flexShrink: 0,
+                      color: '#0077b5',
+                      borderColor: '#0077b5',
+                      '&:hover': {
+                        borderColor: '#0077b5',
+                        bgcolor: alpha('#0077b5', 0.08),
+                      },
+                    }}
+                  >
+                    LinkedIn
+                  </Button>
+                </LinkedinShareButton>
               </Stack>
             </Stack>
           </Grid>
