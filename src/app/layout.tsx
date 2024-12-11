@@ -43,6 +43,16 @@ type Props = {
 export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" className={primaryFont}>
+      <head>
+        <meta name="description" content={metadata.description} />
+        <meta name="keywords" content={metadata.keywords} />
+        <meta property="og:title" content={metadata.title} />
+        <meta property="og:description" content={metadata.description} />
+        <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/tripmarket-18caf.firebasestorage.app/o/tour-images%2Fimage-20230322-122832.png1733389707215?alt=media&token=fd1cc0bd-f243-48d4-b333-a1cbef8e3bbd"/>
+        <meta property="og:url" content="https://example.com" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://example.com/default-image.jpg" />
+      </head>
       <body>
         <LocalizationProvider>
           <SettingsProvider
