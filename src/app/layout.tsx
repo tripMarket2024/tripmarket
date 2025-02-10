@@ -1,27 +1,27 @@
 /* eslint-disable perfectionist/sort-imports */
 import 'src/global.css';
-
+ 
 // ----------------------------------------------------------------------
-
+ 
 import ThemeProvider from 'src/theme';
 import { primaryFont } from 'src/theme/typography';
 import { LocalizationProvider } from 'src/locales';
-
+ 
 import ProgressBar from 'src/components/progress-bar';
 import { MotionLazy } from 'src/components/animate/motion-lazy';
 import { SettingsDrawer, SettingsProvider } from 'src/components/settings';
 import { AuthProvider } from 'src/contexts/auth-context';
 import { LanguageProvider } from '../contexts/language-context';
-
+ 
 // ----------------------------------------------------------------------
-
+ 
 export const viewport = {
   themeColor: '#000000',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
 };
-
+ 
 export const metadata = {
   title: 'Zone UI Kit',
   description:
@@ -35,11 +35,11 @@ export const metadata = {
     { rel: 'apple-touch-icon', sizes: '180x180', url: '/favicon/apple-touch-icon.png' },
   ],
 };
-
+ 
 type Props = {
   children: React.ReactNode;
 };
-
+ 
 export default function RootLayout({ children }: Props) {
   return (
     <html lang="en" className={primaryFont}>
